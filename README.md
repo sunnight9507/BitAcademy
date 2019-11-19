@@ -1,4 +1,4 @@
-# bitacademy
+### bitacademy
 
 #### [1주차](https://github.com/sunnight9507/bitacademy)
 
