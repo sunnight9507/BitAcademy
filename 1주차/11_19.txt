@@ -1,0 +1,86 @@
+11/19
+
+- CentOS 6 설치 및 서버 구축
+- 서버 내 자바 설치
+- 주의할점 : 압축폴더 리눅스 서버 안에서 풀기
+
+vi ~/.bashrc
+alias cls='clear'
+alias sf='cd /mnt/hgfs/temp'
+alias loc='cd /usr/local'
+alias ips='ifconfig eth0 192.168.190.132 up'
+- 명령어 추가
+
+getconf LONG_BIT
+- 몇 비트인지 확인
+
+mv 파일명 원하는곳(mv jdk-8u131-linux-i586 /usr/local)
+- 원하는 곳으로 파일 이동
+
+ln -s jdk1.8.0 131 java
+- 심볼릭 링크 설정
+
+vi /etc/profile
+
+export JAVA_HOME=/usr/local/java
+export PATH=$JAVA_HOME/bin:$PATH
+
+
+source /stc/profile
+
+
+- hostname 변경
+
+vi /etc/sysconfig/network
+
+HOSTNAME=namenode
+
+init 6
+- rebooting
+
+
+ifconfig
+
+ping 192.168.1.1
+- ping 보내기
+- 나가려면 Ctrl + c
+
+ifconfig eth0 192.168.190.130 up
+- ip 주소 변경
+
+192.168.190.132
+
+
+vi /etc/hosts
+192.168.190.130 namenode
+192.168.190.132 snamenode
+
+
+namenode, snamenode에서 hadoop 파일 만들기
+mkdir -p /home/hadoop/hdfs/name
+mkdir -p /home/hadoop/hdfs/data
+mkdir -p /home/hadoop/hdfs/temp
+
+
+보안 인증키 만들기
+ssh-keygen -t rsa
++ Enter 3번
+
+cd .ssh
+ls
+- 인증 키 생성됨 확인
+
+- namenode, snamenode 각 서버에 실행
+cat id_rsa.pub
+
+cat id_rsa.pub>>authorized_keys
+
+
+각 인증키 공유
+ssh root@snamenode cat ~/.ssh/id_rsa.pub>>~/.ssh/authorized_keys
+scp -rp authorized_keys root@snamenode:~/.ssh/authorized_keys
+
+
+cat authorized_keys
+
+ssh namenode
