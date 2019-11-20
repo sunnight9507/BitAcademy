@@ -31,7 +31,7 @@ alias tr='rm -rf /home/hadoop/hdfs/temp/*'
 
 7. namenode 계정으로 가서 vi /etc/profile 들어가기
 
-8. PATH 위에 export HADOOP_HOME=/usr/local/hadoop 입력
+8. PATH 위에 export HADOOP_HOME=/usr/local/hadoop 입력(자바 / 하둡 / Path => 순서 중요) 
 
 9. export PAHT 부분 수정
 export PATH=$JAVA_HOME/bin:$HADOOP_HOME/bin:$PATH 이렇게 수정
@@ -111,19 +111,20 @@ passwd aaa
 유저 삭제
 userdel aaa
 
+서브 디렉토리 생성
+mkdir -p dir2/subdir
+
+디렉토리 삭제
+rmdir subdir
+
+강제 삭제
+rm -rf dir2
 
 
+find /home -perm 755
 
+아래에 파일이 있을 경우 삭제
+ls .pro*
 
-
-
-
-
-
-
-
-
-
-
-
-
+자바 컴파일
+javac
