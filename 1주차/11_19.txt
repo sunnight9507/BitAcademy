@@ -84,3 +84,19 @@ scp -rp authorized_keys root@snamenode:~/.ssh/authorized_keys
 cat authorized_keys
 
 ssh namenode
+
+
+
+Hadoop setup, 유지, 보수
+
+cd /home/hadoop/hdfs/temp
+vi ~/.bashrc
+alias tr='rm -rf /home/hadoop/hdfs/temp/*'
+alias mr='rm -rf /home/hadoop/hdfs/mapred/*'
+alias sps='service iptables stop'
+
+
+
+옮긴 뒤 링크 걸어주기
+mv hadoop-1.0.4 /usr/local
+ln -s hadoop-1.0.4 hadoop

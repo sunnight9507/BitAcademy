@@ -1,0 +1,129 @@
+11/20
+
+- 하둡 환경설정
+
+namenode, snamenode 모두 vi ~/.bashrc 들어가서 
+
+alias sps='service iptables stop'
+alias mr='rm -rf /home/hadoop/hdfs/mapred/*'
+alias tr='rm -rf /home/hadoop/hdfs/temp/*'
+작성
+
+
+1. namenode에서 usr/local/hadoop/conf 들어가서
+
+2. vi core-site.xml   -> configulation 1번째 복사
+  vi hdfs-site.xml   -> configulation 2번째 복사 후 value를 1로 변경
+  vi mapred-site.xml   -> configulation 3번째 복사
+  vi hadoop-env.sh   -> export JAVA_HOME=/usr/local/java 추가
+  vi masters      -> snamenode 입력 local앞에 #
+  vi slaves      -> snamenode 입력 local앞에 #
+수정 필요
+
+3. loc 가서 tar czvfp hadoop.tar.gz hadoop-1.0.4/ 입력
+
+4. scp -rp hadoop.tar.gz snamenode:/usr/local 로 보내준다.
+
+5. sname 계정으로 가서 받은 파일 압축 풀기
+
+6. 싱크 만들어주기
+  ln -s hadoop-1.0.4 hadoop 입력
+
+7. namenode 계정으로 가서 vi /etc/profile 들어가기
+
+8. PATH 위에 export HADOOP_HOME=/usr/local/hadoop 입력
+
+9. export PAHT 부분 수정
+export PATH=$JAVA_HOME/bin:$HADOOP_HOME/bin:$PATH 이렇게 수정
+
+10. 빠져나온 후 source /etc/profile 입력
+
+11. hadoop namenode -format 입력
+
+12. start-all.sh 입력
+
+13. jps 입력 시 세 가지 나오면 정상
+
+14. snamenode 들어가서 jps 입력 시 네 가지 나오면 정상
+
+하둡 동력장치를 키는 코드
+hadoop namenode -format
+
+start-all.sh
+
+snamenode가서 
+cd mapred
+jps 입력했을때
+
+namenode => 3개 있어야 된다.
+snamenode => 4개 있어야 된다.
+
+
+firefox 들어가서
+
+http://namenode:50070
+http://namenode:50030
+
+log 파일 확인 가능
+Nodes에 1이 있어야 함
+
+하둡의 디렉토리 확인
+hadoop fs -lsr /
+
+하둡에 디렉토리 생성
+hadoop fs -mkdir in1
+
+txt파일 이동
+hadoop fs -put CHANGES.txt /user/root/in1
+
+텍스트 마이닝을 위한 wordcount
+hadoop jar hadoop-examples-1.0.4.jar wordcount /user/root/in1/CHANGES.txt out1
+
+파일 옮기기
+hadoop fs -cat /user/root/out1/part-r-00000>>/mnt/hgfs/temp/sample1
+
+파일 있는지 확인
+sf
+ls -lrt
+sample1 있는지 확인
+
+
+cp test.txt /usr/local/hadoop
+
+
+
+LANG="en_US.UTF-8"
+SYSFONT="latarcyrheb-sun16"
+
+
+
+--------------------------------------------------
+
+유저 추가
+useradd aaa
+
+유저가 추가 되었는지 확인
+vi /etc/passwd
+
+비밀번호 설정
+passwd aaa
+
+유저 삭제
+userdel aaa
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
