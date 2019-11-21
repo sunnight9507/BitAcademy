@@ -1,0 +1,113 @@
+호스트의 IP주소를 검색
+nslookup www.naver.com
+
+호스트 이름 확인
+hostname
+
+호스트 이름 변경
+vi /etc/hostname
+
+네트워크 상태 확인
+netstat -rn
+
+
+----------------------
+hive 압축 파일 풀기
+tar xzvfp (hive 파일) 
+
+파일 local로 옮기기
+mv hive-0.9.0 /usr/local
+
+hive 연결시켜주기(심볼릭 링크)
+ln -s hive-0.9.0 hive
+
+path 변경
+vi /etc/profile
+
+export HIVE_HOME=/usr/local/hive
+export PATH=$JAVA_HOME/bin:$HADOOP_HOME/bin:$HIVE_HOME/bin:$PATH
+
+source /etc/profile
+
+
+template 제거
+
+cd conf
+mv hive-exec-log4j.properties.template hive-exec-log4j.properties
+mv hive-log4j.properties.template hive-log4j.properties
+
+
+경고를 막아주는 것
+vi hive-exec-log4j.properties
+
+log4j.appender.EventCounter=org.apache.hadoop.metrics.jvm.EventCounter을 
+log4j.appender.EventCounter=org.apache.hadoop.log.metrics.EventCounter
+
+vi hive-log4j.properties 
+여기서도 위와 동일하게 변경
+log4j.appender.EventCounter=org.apache.hadoop.log.metrics.EventCounter
+
+
+temp에서
+mkdir hive
+cd hive
+hive
+이제 하이브 실행
+
+
+먼저 hadoop 키기
+켜기 전에
+sps, ips, mr, tr
+
+하둡 켜기
+hadoop namenode -format
+
+start-all.sh
+
+jps입력했을때
+namenode에서는 3개
+snamenode에서는 4개
+
+이제 하이브 실행
+cd hive
+hive
+
+show databases; 실행 되면 hive 사용 가능
+
+hive실행시에는 ; 로 코드 마무리
+나갈때는 exit;
+
+data 복사 붙여넣기
+
+data에 대한 설명
+describe airdelay;
+desc airdelay;
+
+ 
+1999 - 2002까지 load
+
+load data local inpath '1999.csv'
+overwrite into table airdelay
+partition(delayYear=1999);
+
+load data local inpath '2000.csv'
+overwrite into table airdelay
+partition(delayYear=2000);
+
+load data local inpath '2001.csv'
+overwrite into table airdelay
+partition(delayYear=2001);
+
+load data local inpath '2002.csv'
+overwrite into table airdelay
+partition(delayYear=2002);
+
+
+csv파일 잘 들어갔는지 확인해줄때
+hadoop fs -lrt /
+
+터미널 나갔을 때 다시 할 때는 
+source /etc/profile 실행 해줘야 한다.
+
+Error 났을 때 lck 지워주기
+rm hive/metastore/metastore_db/*lck
