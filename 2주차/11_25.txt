@@ -1,0 +1,21 @@
+자바 실행
+
+기본 실행 파일
+public class Ex1 {
+	public static void main(String[] args) {
+		System.out.println("Hello Java");		
+	}
+}
+
+프롬프트에서 실행
+위 파일로 이동
+javac Ex1.java
+dir
+class 생성됐는지 확인
+자바 실행
+java Ex1
+
+// 한줄 주석
+
+/* 여러줄 주석 */
+
