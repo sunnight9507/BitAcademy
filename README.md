@@ -8,7 +8,10 @@
 - 자바, 하둡 연결 및 환경설정
 - 하둡을 이용한 wordcount
 
+#### [2주차](https://github.com/sunnight9507/bitacademy/tree/master/2%EC%A3%BC%EC%B0%A8)
 
+- Eclipse, cmd창 자바 실행
+- 기본적언 자바 언어 교육
 
 
 
