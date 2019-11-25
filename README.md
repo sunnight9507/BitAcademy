@@ -1,6 +1,6 @@
 ## Bitacademy : AI를 활용한 빅데이터 분석 플랫폼 개발 전문가과정
 
-#### [1주차](https://github.com/sunnight9507/bitacademy)
+#### [1주차](https://github.com/sunnight9507/bitacademy/tree/master/1%EC%A3%BC%EC%B0%A8)
 
 - 서버 구축(리눅스 - CentOS_7)
 - 기본 리눅스 언어 교육
