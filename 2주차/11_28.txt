@@ -1,0 +1,14 @@
+SQL> select table_name from user_tables;
+
+TABLE_NAME
+------------------------------
+SALGRADE
+BONUS
+EMP
+DEPT
+
+SQL> select * from EMP;
+
+Oracle SQL Developer
+실행 : Ctrl + Enter
+주석처리 : Ctrl + /
