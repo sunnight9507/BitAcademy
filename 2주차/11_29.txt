@@ -1,0 +1,177 @@
+---------------------------------------------cmd 창
+
+log안남기고 들어가는 방법
+sqlplus /nolog
+
+계정없이 들어가기
+SQL> conn /as sysdba;
+연결되었습니다.
+
+사용자 변경
+SQL> alter user sys identified by 1234;
+사용자가 변경되었습니다.
+
+SQL> alter user system identified by 1234;
+사용자가 변경되었습니다.
+
+SQL> alter user scott identified by 1234;
+사용자가 변경되었습니다.
+
+scott 계정 풀어주기
+SQL> alter user scott account unlock;
+사용자가 변경되었습니다.
+
+SQL> grant connect, resource to scott;
+권한이 부여되었습니다.
+
+SQL> show user;
+USER은 "SYS"입니다
+SQL> conn scott/1234;
+연결되었습니다.
+SQL> show user;
+USER은 "SCOTT"입니다
+
+SQL> select * from tab;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+BONUS                          TABLE
+DEPT                           TABLE
+EMP                            TABLE
+SALGRADE                       TABLE
+
+SQL> desc emp;
+ 이름                                      널?      유형
+ ----------------------------------------- -------- ----------------------------
+ EMPNO                                     NOT NULL NUMBER(4)
+ ENAME                                              VARCHAR2(10)
+ JOB                                                VARCHAR2(9)
+ MGR                                                NUMBER(4)
+ HIREDATE                                           DATE
+ SAL                                                NUMBER(7,2)
+ COMM                                               NUMBER(7,2)
+ DEPTNO                                             NUMBER(2)
+
+
+------------------------------------sql plus
+
+
+SQL> select empno, ename, job, sal from emp;
+
+     EMPNO ENAME      JOB              SAL
+---------- ---------- --------- ----------
+      7369 SMITH      CLERK            800
+      7499 ALLEN      SALESMAN        1600
+      7521 WARD       SALESMAN        1250
+      7566 JONES      MANAGER         2975
+      7654 MARTIN     SALESMAN        1250
+      7698 BLAKE      MANAGER         2850
+      7782 CLARK      MANAGER         2450
+      7788 SCOTT      ANALYST         3000
+      7839 KING       PRESIDENT       5000
+      7844 TURNER     SALESMAN        1500
+      7876 ADAMS      CLERK           1100
+
+     EMPNO ENAME      JOB              SAL
+---------- ---------- --------- ----------
+      7900 JAMES      CLERK            950
+      7902 FORD       ANALYST         3000
+      7934 MILLER     CLERK           1300
+
+14 개의 행이 선택되었습니다.
+
+
+SQL> select empno, ename, job, sal from emp where sal > 1500;
+
+     EMPNO ENAME      JOB              SAL
+---------- ---------- --------- ----------
+      7499 ALLEN      SALESMAN        1600
+      7566 JONES      MANAGER         2975
+      7698 BLAKE      MANAGER         2850
+      7782 CLARK      MANAGER         2450
+      7788 SCOTT      ANALYST         3000
+      7839 KING       PRESIDENT       5000
+      7902 FORD       ANALYST         3000
+
+7 개의 행이 선택되었습니다.
+
+SQL> insert into dept values(50,'HEAD',
+  2  'SEOUL');
+
+1 개의 행이 만들어졌습니다.
+=> 임시로 데이터를 만들었기 때문에 창을 닫고 다시 확인하면 없다.
+
+SQL> select * from dept;
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        50 HEAD           SEOUL
+        10 ACCOUNTING     NEW YORK
+        20 RESEARCH       DALLAS
+        30 SALES          CHICAGO
+        40 OPERATIONS     BOSTON
+
+quit또는 exit을 통해서 저장
+
+지금까지 한 것 저장 X
+rollback;
+
+지금까지 한 것 반영
+commit;
+
+명령어 실행과 동시에 결과를 데이터베이스에 반영
+set autocommit on;
+
+
+바탕화면에 MY_DATA 폴더 생성 후
+SQL> conn system/1234;
+연결되었습니다.
+SQL> create tablespace my_space datafile 'C:\Users\BIT\Desktop\MY_DATA\my_data01.dbf' size 20M;
+
+테이블스페이스가 생성되었습니다.
+
+
+my_space를 사용하는 sun이라는 user 생성
+SQL> create user sun identified by 1234 default tablespace my_space quota unlimited on my_space;
+
+사용자가 생성되었습니다.
+
+SQL> grant connect, resource to sun;
+
+권한이 부여되었습니다.
+
+SQL> conn sun/1234;
+연결되었습니다.
+
+create.sql 불러오기
+SQL> @C:\Users\BIT\Desktop\create.sql;
+
+table 확인
+SQL> select * from tab;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+CLASS                          TABLE
+COURSE                         TABLE
+DEPARTMENT                     TABLE
+PROFESSOR                      TABLE
+STUDENT                        TABLE
+TAKES                          TABLE
+
+6 개의 행이 선택되었습니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
