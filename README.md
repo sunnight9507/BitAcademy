@@ -13,6 +13,6 @@
 - Eclipse, cmd창 자바 실행
 - 기본적언 자바 언어 교육
 - Oracle 설치 및 실행
-- DataBase 개념 숙지 및 
+- DataBase 개념 숙지 및 실습
 
 #### [참고 사이트](http://www.bitacademy.com/Course/Innovation/Course_Innovation_Ai_Bigdata.asp)
