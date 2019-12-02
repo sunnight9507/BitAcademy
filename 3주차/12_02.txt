@@ -1,0 +1,608 @@
+---------------------------------------------cmd 창
+
+- 들어가는 법
+sqlplus
+
+SQL> conn sun/1234;
+연결되었습니다.
+
+create.sql 불러오기
+SQL> @C:\Users\BIT\Desktop\create.sql;
+
+SQL> select s2.name
+  2  from student s1, student s2
+  3  where s1.address = s2.address and s1.name = '김광식';
+
+NAME
+----------
+김광식
+김정현
+백태성
+
+SQL> select name 이름, position 직위, 2012-year_emp 재직연수
+  2  from professor;
+
+이름       직위         재직연수
+---------- ---------- ----------
+이태규     교수               15
+고희석     부교수              9
+최성희     부교수              7
+김태석     교수               13
+박철재     조교수              5
+장민석     부교수              7
+
+6 개의 행이 선택되었습니다.
+
+
+SQL> select *
+  2  from student
+  3  where resident_id like '%-2%';
+
+STU_ID     RESIDENT_ID    NAME             YEAR ADDRESS    DEPT_ID
+---------- -------------- ---------- ---------- ---------- ----------
+1292003    891021-2308302 김현정              4 대전       920
+1292301    890902-2704012 김현정              2 대구       923
+
+## 합집합 union
+
+SQL> select name from student
+  2  union
+  3  select name from professor;
+
+NAME
+----------
+고희석
+김광식
+김우주
+김정현
+김태석
+김현정
+박광수
+박철수
+박철재
+백태성
+이태규
+
+NAME
+----------
+장민석
+최성희
+
+13 개의 행이 선택되었습니다.
+
+## 교집합 intersect
+
+SQL> select s.stu_id
+  2  from student s, department d, takes t
+  3  where s.dept_id = d.dept_id and
+  4  t.stu_id = s.stu_id and
+  5  dept_name='컴퓨터공학과' and grade = 'A+';
+
+STU_ID
+----------
+1292001
+1292003
+
+SQL> select stu_id
+  2  from student s, department d
+  3  where s.dept_id = d.dept_id and dept_name='컴퓨터공학과'
+  4  intersect
+  5  select stu_id
+  6  from takes
+  7  where grade = 'A+';
+
+STU_ID
+----------
+1292001
+1292003
+
+# left outer join
+# using (course_id) => 조인 조건이 각 테이블에서 course_id를 비교하라는 의미
+
+SQL> select title, credit, year, semester
+  2  from course left outer join class
+  3  using (course_id);
+
+TITLE              CREDIT       YEAR   SEMESTER
+-------------- ---------- ---------- ----------
+전산개론                3       2012          1
+자료구조                3       2012          1
+데이터베이스            4       2012          1
+데이터베이스            4       2012          1
+인공지능                3       2012          1
+인공지능                3       2012          1
+운영체제                3       2012          1
+운영체제                3       2012          1
+알고리즘                2       2012          1
+알고리즘                2       2012          1
+컴퓨터구조              3
+
+TITLE              CREDIT       YEAR   SEMESTER
+-------------- ---------- ---------- ----------
+객체지향언어            4
+이산수학                4
+
+13 개의 행이 선택되었습니다.
+
+# 또 다른 외부조인 표현
+
+SQL> select title, credit, year, semester
+  2  from course, class
+  3  where course.course_id = class.course_id (+);
+
+TITLE              CREDIT       YEAR   SEMESTER
+-------------- ---------- ---------- ----------
+전산개론                3       2012          1
+자료구조                3       2012          1
+데이터베이스            4       2012          1
+데이터베이스            4       2012          1
+인공지능                3       2012          1
+인공지능                3       2012          1
+운영체제                3       2012          1
+운영체제                3       2012          1
+알고리즘                2       2012          1
+알고리즘                2       2012          1
+컴퓨터구조              3
+
+TITLE              CREDIT       YEAR   SEMESTER
+-------------- ---------- ---------- ----------
+객체지향언어            4
+이산수학                4
+
+13 개의 행이 선택되었습니다.
+
+# COUNT
+
+SQL> select count(*)
+  2  from student
+  3  where year = 3;
+
+  COUNT(*)
+----------
+         5
+
+# distinct : 중복제거
+
+SQL> select count(distinct dept_id)
+  2  from student;
+
+COUNT(DISTINCTDEPT_ID)
+----------------------
+                     3
+
+# SUM
+
+SQL> select sum(2012 - year_emp)
+  2  from professor;
+
+SUM(2012-YEAR_EMP)
+------------------
+                56
+
+
+# EMP 사용을 위한 scott 연결
+
+SQL> conn scott/1234;
+연결되었습니다.
+
+SQL> select ename, sal
+  2  from emp
+  3  where sal = (select max(sal) from emp);
+
+ENAME             SAL
+---------- ----------
+KING             5000
+
+# SUN으로 이동
+# GROUP BY
+
+SQL> select dept_name, count(*)
+  2  from student s, department d
+  3  where s.dept_id = d.dept_id
+  4  group by dept_name;
+
+DEPT_NAME              COUNT(*)
+-------------------- ----------
+전자공학과                    2
+컴퓨터공학과                  3
+산업공학과                    3
+
+SQL> select dept_name, count(*), avg(2012 - year_emp), max(2012 - year_emp)
+  2  from professor p, department d
+  3  where p.dept_id = d.dept_id
+  4  group by dept_name;
+
+DEPT_NAME              COUNT(*) AVG(2012-YEAR_EMP) MAX(2012-YEAR_EMP)
+-------------------- ---------- ------------------ ------------------
+전자공학과                    2                  6                  7
+컴퓨터공학과                  2                 12                 15
+산업공학과                    2                 10                 13
+
+# HAVING : 집계함수를 이용해 비교할 때 사용
+
+SQL> select dept_name, count(*), avg(2012 - year_emp), max(2012 - year_emp)
+  2  from professor p, department d
+  3  where p.dept_id = d.dept_id
+  4  group by dept_name
+  5  having avg(2012 - year_emp) >= 10;
+
+DEPT_NAME              COUNT(*) AVG(2012-YEAR_EMP) MAX(2012-YEAR_EMP)
+-------------------- ---------- ------------------ ------------------
+컴퓨터공학과                  2                 12                 15
+산업공학과                    2                 10                 13
+
+
+# 처리 순서 
+- where
+- group by
+- having
+- order by
+
+# 중첩질의 : IN, NOT IN
+
+SQL> select title
+  2  from course
+  3  where course_id in
+  4  (select distinct course_id
+  5    from class
+  6   where classroom = '301호');
+
+TITLE
+--------------
+전산개론
+데이터베이스
+운영체제
+
+
+SQL> select title
+  2  from course
+  3  where course_id  not in
+  4  (select distinct course_id
+  5  from class
+  6  where year = 2012 and semester = 2);
+
+TITLE
+--------------
+컴퓨터구조
+운영체제
+자료구조
+객체지향언어
+알고리즘
+데이터베이스
+전산개론
+인공지능
+이산수학
+
+9 개의 행이 선택되었습니다.
+
+
+# SOME, ALL
+
+SQL> select c1.course_id, title, year, semester, prof_id
+  2  from class c1, course c2
+  3  where c1.course_id = c2.course_id and enroll >= all
+  4  (select enroll from class);
+
+COURSE_ID  TITLE                YEAR   SEMESTER PROF_ID
+---------- -------------- ---------- ---------- ----------
+C301       운영체제             2012          1 92501
+C501       인공지능             2012          1 92501
+
+# 가장 많은 급여를 받는 종업원 이름과 급여를 구하는 방법
+
+SQL> select ename, sal
+  2  from emp
+  3  where sal = (select max(sal) from emp);
+
+ENAME             SAL
+---------- ----------
+KING             5000
+
+SQL> select ename, sal
+  2  from emp
+  3  where sal >= all(select sal from emp);
+
+ENAME             SAL
+---------- ----------
+KING             5000
+
+
+# VIEW
+
+- view 생성 관련된 권한 부여
+- system으로 가서 코드 작성
+SQL> grant create view to sun;
+권한이 부여되었습니다.
+
+SQL> create or replace view v_takes as
+  2  select stu_id, class_id
+  3  from takes;
+뷰가 생성되었습니다.
+
+- 뷰 생성 확인
+
+SQL> select * from v_takes;
+
+STU_ID     CLASS_ID
+---------- ----------
+1292001    C101-01
+1292001    C103-01
+1292001    C301-01
+1292002    C102-01
+1292002    C103-01
+1292002    C502-01
+1292003    C103-02
+1292003    C501-02
+1292301    C102-01
+1292303    C102-01
+1292303    C103-02
+
+STU_ID     CLASS_ID
+---------- ----------
+1292303    C501-01
+
+12 개의 행이 선택되었습니다.
+
+
+SQL> insert into v_takes
+  2  values ('1292502', 'C101-01');
+
+1 개의 행이 만들어졌습니다.
+
+SQL> create or replace view student3 as
+  2  select stu_id, name, year
+  3  from student
+  4  where year = 3;
+
+뷰가 생성되었습니다.
+
+
+# 무결성
+- 기본키 / 외래키
+- 무결성 제약 : not null / unique / check / default
+
+# 제약조건 확인
+# table은 무조건 대문자로.
+
+SQL> select constraint_name, table_name, constraint_type from ALL_constraints where table_name = 'STUDENT';
+
+CONSTRAINT_NAME                TABLE_NAME                     C
+------------------------------ ------------------------------ -
+FK_STUDENT                     STUDENT                        R
+PK_STUDENT                     STUDENT                        P
+SYS_C0010831                   STUDENT                        C
+SYS_C0010830                   STUDENT                        C
+
+
+# 사용자 계정 생성
+
+SQL> create user lee
+  2  identified by lee_pass
+  3  default tablespace users
+  4  quota 2M on users;
+
+사용자가 생성되었습니다.
+
+- 권한을 부여해줘야 사용 가능.
+
+SQL> grant create session to lee;
+권한이 부여되었습니다.
+
+SQL> grant create table to lee;
+권한이 부여되었습니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
