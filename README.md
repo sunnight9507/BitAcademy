@@ -17,7 +17,7 @@
 
 #### [3주차](https://github.com/sunnight9507/bitacademy/tree/master/2%EC%A3%BC%EC%B0%A8)
 
-- Oracle 문법 교육 및 실습(Admin, 무결성, DB모델링)
+- Oracle 문법 교육 및 실습(Admin, 무결성, DB모델링, 정규화, 인덱스)
 - 
 
 #### [참고 사이트](http://www.bitacademy.com/Course/Innovation/Course_Innovation_Ai_Bigdata.asp)
