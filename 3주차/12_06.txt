@@ -1,0 +1,139 @@
+리눅스 ip 확인
+ifconfig
+
+ssh datamaster@192.168.1.31 (본인 IP)
+
+root로 접속
+su -
+
+누군지 확인
+whoami
+
+vi모드
+q!  => 원본으로 돌리고 나가기
+
+RWX
+7 : RWX
+6 : RW
+5 : RX
+4 : R(읽기)
+
+hello.sh를 rwx로 변경
+[root@lx01 ~]# ls -l
+합계 20
+-rw-------. 1 root root  898 2019-12-05 15:17 anaconda-ks.cfg
+-rw-r--r--. 1 root root   32 2019-12-06 09:34 hello.sh
+
+[root@lx01 ~]# chmod 700 hello.sh
+[root@lx01 ~]# ls -l
+합계 20
+-rw-------. 1 root root  898 2019-12-05 15:17 anaconda-ks.cfg
+-rwx------. 1 root root   32 2019-12-06 09:34 hello.sh
+
+[root@lx01 ~]# echo $PATH
+/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin
+
+[root@lx01 ~]# ./hello.sh
+hello world
+
+[root@lx01 ~]# vi time_sysc.sh
+#!/bin/bash
+rdate -s time.bora.net && date && clock -r && clock -w > /dev/null 2>&1
+
+[root@lx01 cron.daily]# cd /etc/cron.daily/
+[root@lx01 cron.daily]# cp /root/time_sysc.sh .
+[root@lx01 cron.daily]# ls
+logrotate  time_sync.sh
+[root@lx01 cron.daily]# ls -lrt
+합계 8
+-rwx------. 1 root root 180 2003-07-10 04:36 logrotate
+-rw-r--r--. 1 root root  84 2019-12-06 09:50 time_sync.sh
+
+[root@lx01 cron.daily]# vi /etc/sysconfig/selinux
+SELINUX=disabled
+
+
+[root@lx01 ~]# cd /etc/init.d
+[root@lx01 init.d]# ls
+auditd            crond      halt       iptables  iscsid   lvm2-lvmetad  mdmonitor   netconsole  network  rdisc        rsyslog  saslauthd  sshd
+blk-availability  functions  ip6tables  iscsi     killall  lvm2-monitor  multipathd  netfs       postfix  restorecond  sandbox  single     udev-post
+
+
+[root@lx01 init.d]# /etc/init.d/iptables stop
+iptables: 체인을 ACCEPT 규칙으로 설정 중:  filter          [  OK  ]
+iptables: 방화벽 규칙을 지웁니다:                          [  OK  ]
+iptables: 모듈을 언로드하는 중:                            [  OK  ]
+
+[root@lx01 init.d]# chkconfig iptables off
+[root@lx01 init.d]# chkconfig ip6tables off
+
+
+
+[root@lx01 ~]# vi /etc/sysctl.conf
+# swap
+vm.swappiness = 10
+
+[root@lx01 ~]# vi /etc/rc.local
+/bin/echo never > /sys/kernel/mm/redhat_transparent_hugepage/defrag
+/bin/echo never > /sys/kernel/mm/redhat_transparent_hugepage/enabled
+
+[root@lx01 ~]# vi /etc/security/limits.conf
+root soft nofile 65536
+root hard nofile 65536
+*    soft nofile 65536
+*    hard nofile 65536
+
+root soft nproc 32768
+root hard nproc 32768
+*    soft nproc 32768
+*    hard nproc 32768
+
+[root@lx01 ~]# vi /etc/udev/rules.d/70-persistent-net.rules
+# SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="08:00:27:c4:e9:b7", ATTR{type}=="1", KERNEL=="eth*", NAME="eth0"
+를  주석 처리한다.
+
+리부팅
+sync
+reboot
+
+끝때
+shutdown -h now
+
+가상머신 복사할때
+MAC 주소 정책 : 모든 네트워크 어댑터의 새 MAC 주소 생성
+
+cd /etc/sysconfig/network-scripts
+
+/etc/init.d/network start
+
+두번째 OS
+192.168.1.48
+세번째 OS
+192.168.1.59
+
+lx01.bigdata2019.com 192.168.1.32
+lx02.bigdata2019.com 192.168.1.33
+lx03.bigdata2019.com 192.168.1.35
+
+gateway: 192.168.1.1root
+
+netmask: 255.255.255.0
+dns1: 168.126.63.1
+dns2: 168.126.63.2
+
+
+192.168.1.32 lx01.bigdata2019.com lx01
+192.168.1.33 lx02.bigdata2019.com lx02
+192.168.1.35 lx03.bigdata2019.com lx03
+
+
+ppt 60하고
+Xshell에서 
+open
+새로만들기
+이름 lx01 / 호스트 lx01.bigdata2019.com 
+사용자인증 : datamaster
+
+
+
+
