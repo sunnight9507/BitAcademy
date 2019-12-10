@@ -1,0 +1,185 @@
+새로 콘솔창 생성
+C / D로 파일 옮기고
+sftp datamaster@lx01.bigdata2019.com
+put sample.txt
+파일 붙여넣기
+
+ppt 103부터
+
+107에서
+ls -l /usr/java/jdk1.7.0_67-cloudera/java*
+
+ln -s /usr/java/jdk1.7.0_67-cloudera/bin/java /usr/bin/java
+ln -s /usr/java/jdk1.7.0_67-cloudera/bin/javac /usr/bin/javac
+ln -s /usr/java/jdk1.7.0_67-cloudera/bin/javaws /usr/bin/javacw
+ln -s /usr/java/jdk1.7.0_67-cloudera/bin/jps /usr/bin/jps
+ln -s /usr/java/jdk1.7.0_67-cloudera/bin/javadoc /usr/bin/javadoc
+
+java -version
+
+#디렉토리 만들어주고
+mkdir dowork
+
+# 테스트
+vi HelloWorld.java
+javac HelloWorld.java
+java HelloWorld
+
+# gic client 설치
+yum -y install perl-devel
+
+# Maven 설치
+wget https://www.kernel.org/pub/software/scm/git/git-2.6.4.tar.gz
+tar xvfz git-2.6.4.tar.gz
+cd git-2.6.4
+./configure --prefix=/usr/local
+
+make
+make install
+
+git --version
+
+wget http://apache.mirror.cdnetworks.com/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
+
+tar xvfz apache-maven-3.3.9-bin.tar.gz
+mv apache-maven-3.3.9 /usr/local/maven3.3.9
+
+cd /usr/local/maven3.3.9/
+
+경로 설정
+vi /etc/profile
+- 제일 아래에다가
+# Maven
+M2_HOME=/usr/local/maven3.3.9
+export PATH=$PATH:$M2_HOME/bin
+
+# 경로 들어갔는지 확인
+source /etc/profile
+echo $PATH
+
+mvn --version
+
+# github 다운 및 빌드하기
+# 다운
+wordspace 만들고
+mkdir workspace
+cd workspace
+git clone git://github.com/sunnight9507/smartcarlog.git
+# 빌드
+mvn -Dhttps.protocols=TLSv1.2 clean install
+
+
+
+[datamaster@lx02 smartcarlog]$ pwd
+/home/datamaster/workspace/smartcarlog
+[datamaster@lx02 smartcarlog]$ cd working/
+[datamaster@lx02 working]$ pwd
+/home/datamaster/workspace/smartcarlog/working
+
+[datamaster@lx02 working]$ cd
+[datamaster@lx02 ~]$ cd workspace
+[datamaster@lx02 workspace]$ ls -la
+합계 12
+drwxr-xr-x  3 datamaster wheel 4096 2019-12-10 12:51 .
+drwx------. 4 datamaster wheel 4096 2019-12-10 12:53 ..
+drwxr-xr-x  8 datamaster wheel 4096 2019-12-10 13:17 smartcarlog
+[datamaster@lx02 workspace]$ mkdir helloworld
+[datamaster@lx02 workspace]$ cd helloworld/
+
+[datamaster@lx02 helloworld]$ vi HelloWorld.java
+public class HelloWorld{
+        public static void main(String[] args){
+                System.out.println("Hello world");
+        }
+}
+[datamaster@lx02 helloworld]$ javac HelloWorld.java
+[datamaster@lx02 helloworld]$ java HelloWorld
+Hello world
+
+
+[datamaster@lx02 helloworld]$ mkdir com
+[datamaster@lx02 helloworld]$ cd com
+[datamaster@lx02 com]$ pwd
+/home/datamaster/workspace/helloworld/com
+[datamaster@lx02 com]$ mkdir bigdata2019
+[datamaster@lx02 com]$ cd bigdata2019/
+[datamaster@lx02 bigdata2019]$ pwd
+/home/datamaster/workspace/helloworld/com/bigdata2019
+
+
+[datamaster@lx02 bigdata2019]$ pwd
+/home/datamaster/workspace/helloworld/com/bigdata2019
+[datamaster@lx02 bigdata2019]$ mkdir helloworld
+[datamaster@lx02 bigdata2019]$ cd helloworld/
+[datamaster@lx02 helloworld]$ pwd
+/home/datamaster/workspace/helloworld/com/bigdata2019/helloworld
+[datamaster@lx02 helloworld]$ cp /home/datamaster/workspace/helloworld/HelloWorld.java .
+[datamaster@lx02 helloworld]$ pwd
+/home/datamaster/workspace/helloworld/com/bigdata2019/helloworld
+[datamaster@lx02 helloworld]$ vi HelloWorld.java
+package com.bigdata2019.helloworld;
+
+public class HelloWorld{
+        public static void main(String[] args){
+                System.out.println("Hello world");
+        }
+}
+
+[datamaster@lx02 helloworld]$ javac HelloWorld.java 
+[datamaster@lx02 helloworld]$ ls -la
+합계 16
+drwxr-xr-x 2 datamaster wheel 4096 2019-12-10 13:38 .
+drwxr-xr-x 3 datamaster wheel 4096 2019-12-10 13:36 ..
+-rw-r--r-- 1 datamaster wheel  452 2019-12-10 13:38 HelloWorld.class
+-rw-r--r-- 1 datamaster wheel  145 2019-12-10 13:38 HelloWorld.java
+[datamaster@lx02 helloworld]$ pwd
+/home/datamaster/workspace/helloworld/com/bigdata2019/helloworld
+[datamaster@lx02 helloworld]$ cd ..
+[datamaster@lx02 bigdata2019]$ cd ..
+[datamaster@lx02 com]$ cd ..
+[datamaster@lx02 helloworld]$ pwd
+/home/datamaster/workspace/helloworld
+[datamaster@lx02 helloworld]$ java -cp . com.bigdata2019.helloworld.HelloWorld
+Hello world
+
+
+
+[datamaster@lx02 ~]$ cd workspace
+[datamaster@lx02 workspace]$ cd
+[datamaster@lx02 ~]$ cd workspace
+[datamaster@lx02 workspace]$ ls
+helloworld  smartcarlog
+[datamaster@lx02 workspace]$ cd smartcarlog/
+[datamaster@lx02 smartcarlog]$ ls
+pom.xml  src  target  working
+[datamaster@lx02 smartcarlog]$ ls working/
+smartcarlog.jar
+
+git pull git://github.com/sunnight9507/smartcarlog.git
+
+# 빌드
+1) 빌드
+mvn -Dhttps.protocols=TLSv1.2 clean install (현재 작업하고 있는 곳에서)
+
+2) 운행로그 남기기
+java -cp working/smartcarlog.jar com.bigdata2019.smartcar.GenDrivingLog 20191210 1
+
+[datamaster@lx02 smartcarlog]$ java -cp working/smartcarlog.jar com.bigdata2019.smartcar.GenDrivingLog 20191210 1
+오류: 기본 클래스 com.bigdata2019.smartcar.GenDrivingLog을(를) 찾거나 로드할 수 없습니다.
+[datamaster@lx02 smartcarlog]$ mkdir logs
+[datamaster@lx02 smartcarlog]$ mkdir logs/driving
+[datamaster@lx02 smartcarlog]$ java -cp working/smartcarlog.jar com.bigdata2019.smartcar.GenDrivingLog 20191210 1
+오류: 기본 클래스 com.bigdata2019.smartcar.GenDrivingLog을(를) 찾거나 로드할 수 없습니다.
+[datamaster@lx02 smartcarlog]$ 
+
+
+3) 운행 로그 파일 테일링
+tail -f logs/driving/driving.log
+
+
+4) 상태로그 남기기
+[datamaster@lx02 smartcarlog]$ mkdir logs/status
+[datamaster@lx02 smartcarlog]$ java -cp working/smartcarlog.jar com.bigdata2019.smartcar.GenStatusLog 20191210 10
+
+5) 상태로그 파일 테일링 하기
+tail -f status_20191210.log(경로 찾아서)
