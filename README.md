@@ -15,13 +15,13 @@
 - Oracle 설치 및 실행
 - DataBase 개념 숙지 및 실습
 
-#### [3주차](https://github.com/sunnight9507/bitacademy/tree/master/2%EC%A3%BC%EC%B0%A8)
+#### [3주차](https://github.com/sunnight9507/Bit_Academy/tree/master/3%EC%A3%BC%EC%B0%A8)
 
 - Oracle 문법 교육 및 실습(Admin, 무결성, DB모델링, 정규화, 인덱스)
 - 서버환경 구축 및 Cloudera 설치(HDFS, YARN, ZooKeeper)
 
-#### [4주차](https://github.com/sunnight9507/bitacademy/tree/master/2%EC%A3%BC%EC%B0%A8)
+#### [4주차](https://github.com/sunnight9507/Bit_Academy/tree/master/4%EC%A3%BC%EC%B0%A8)
 
-- 
+- Git을 이용한 로그시뮬레이터 설치
 
 #### [참고 사이트](http://www.bitacademy.com/Course/Innovation/Course_Innovation_Ai_Bigdata.asp)
