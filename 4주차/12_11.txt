@@ -1,0 +1,258 @@
+# git 가져오기
+git pull git://github.com/sunnight9507/smartcarlog.git
+
+# 빌드
+1) 빌드
+mvn -Dhttps.protocols=TLSv1.2 clean install (현재 작업하고 있는 곳에서)
+
+2) 운행로그 남기기
+java -cp working/smartcarlog.jar com.bigdata2019.smartcar.GenDrivingLog 20191210 1
+
+[datamaster@lx02 smartcarlog]$ java -cp working/smartcarlog.jar com.bigdata2019.smartcar.GenDrivingLog 20191210 1
+오류: 기본 클래스 com.bigdata2019.smartcar.GenDrivingLog을(를) 찾거나 로드할 수 없습니다.
+[datamaster@lx02 smartcarlog]$ mkdir logs
+[datamaster@lx02 smartcarlog]$ mkdir logs/driving
+[datamaster@lx02 smartcarlog]$ java -cp working/smartcarlog.jar com.bigdata2019.smartcar.GenDrivingLog 20191210 1
+오류: 기본 클래스 com.bigdata2019.smartcar.GenDrivingLog을(를) 찾거나 로드할 수 없습니다.
+[datamaster@lx02 smartcarlog]$ 
+
+
+3) 운행 로그 파일 테일링
+tail -f ~/workspace/smartcarlog/logs/driving/driving.log
+
+
+4) 상태로그 남기기
+[datamaster@lx02 smartcarlog]$ mkdir logs/status
+[datamaster@lx02 smartcarlog]$ java -cp working/smartcarlog.jar com.bigdata2019.smartcar.GenStatusLog 20191210 10
+
+5) 상태로그 파일 테일링 하기
+tail -f status_20191210.log(경로 찾아서)
+
+
+Kafka 25p error
+- java8 파일 옮기기
+
+[c:\~]$ cd ..
+[C:\Users\BIT\Documents\NetSarang\Xshell]$ cd
+[c:\~]$ cd ..
+[C:\Users\BIT\Documents\NetSarang\Xshell]$ cd ..
+[C:\Users\BIT\Documents\NetSarang]$ cd ..
+[C:\Users\BIT\Documents]$ cd ..
+[C:\Users\BIT]$ cd ..
+[C:\Users]$ cd ..
+[C:\]$ cd ..
+The system cannot find the path specified.
+[C:\]$ sftp datamaster@lx02.bigdata2019.com
+
+# local에서 서버로 다운
+sftp:/home/datamaster> put jdk-8u231-linux-x64.tar.gz
+Uploading jdk-8u231-linux-x64.tar.gz to remote:/home/datamaster/jdk-8u231-linux-x64.tar.gz
+
+# 옮기기
+[root@lx02 ~]# mv /home/datamaster/jdk-8u231-linux-x64.tar.gz .
+[root@lx02 ~]# ls
+anaconda-ks.cfg                dowork    install.log         jdk-8u231-linux-x64.tar.gz  time_sysc.sh
+apache-maven-3.3.9-bin.tar.gz  hello.sh  install.log.syslog  time_sync.sh
+
+# 압축풀기
+[root@lx02 ~]# tar xvfz jdk-8u231-linux-x64.tar.gz 
+
+# 이동
+[root@lx02 ~]# mv jdk1.8.0_231 /usr/local/java8
+[root@lx02 ~]# cd /usr
+[root@lx02 usr]# cd local
+[root@lx02 local]# ls
+bin  etc  games  include  java8  lib  lib64  libexec  maven3.3.9  sbin  share  src
+
+# 경로 설정
+[root@lx02 local]# vi /etc/profile
+# Java
+export JAVA_HOME=/usr/local/java8
+export PATH=$PATH:$JAVA_HOME/bin
+export CLASSPATH=.:$JAVA_HOME/lib/tools.jar
+
+# link 변경
+[root@lx02 local]# cd /usr/bin
+[root@lx02 bin]# ls -l java*
+lrwxrwxrwx 1 root root 39 2019-12-10 11:26 java -> /usr/java/jdk1.7.0_67-cloudera/bin/java
+lrwxrwxrwx 1 root root 40 2019-12-10 11:28 javac -> /usr/java/jdk1.7.0_67-cloudera/bin/javac
+lrwxrwxrwx 1 root root 41 2019-12-10 11:28 javacws -> /usr/java/jdk1.7.0_67-cloudera/bin/javaws
+lrwxrwxrwx 1 root root 42 2019-12-10 11:30 javadoc -> /usr/java/jdk1.7.0_67-cloudera/bin/javadoc
+
+
+[root@lx02 bin]# rm -f java
+[root@lx02 bin]# rm -f javac
+[root@lx02 bin]# rm -f javadoc
+[root@lx02 bin]# rm -f javaws
+
+[root@lx02 bin]# ls -l java*
+lrwxrwxrwx 1 root root 25 2019-12-11 13:42 java -> /usr/local/java8/bin/java
+lrwxrwxrwx 1 root root 26 2019-12-11 13:42 javac -> /usr/local/java8/bin/javac
+lrwxrwxrwx 1 root root 41 2019-12-10 11:28 javacws -> /usr/java/jdk1.7.0_67-cloudera/bin/javaws
+lrwxrwxrwx 1 root root 28 2019-12-11 13:42 javadoc -> /usr/local/java8/bin/javadoc
+lrwxrwxrwx 1 root root 27 2019-12-11 13:42 javaws -> /usr/local/java8/bin/javaws
+[root@lx02 bin]# rm -f javacws
+[root@lx02 bin]# ls -l java*
+lrwxrwxrwx 1 root root 25 2019-12-11 13:42 java -> /usr/local/java8/bin/java
+lrwxrwxrwx 1 root root 26 2019-12-11 13:42 javac -> /usr/local/java8/bin/javac
+lrwxrwxrwx 1 root root 28 2019-12-11 13:42 javadoc -> /usr/local/java8/bin/javadoc
+lrwxrwxrwx 1 root root 27 2019-12-11 13:42 javaws -> /usr/local/java8/bin/javaws
+[root@lx02 bin]# cd /usr/java
+[root@lx02 java]# mv jdk1.7.0_67-cloudera jdk1.7.0_67-cloudera.bak
+[root@lx02 java]# ln -s /usr/local/java8 /usr/java/jdk1.7.0_67-cloudera
+[root@lx02 java]# ls -l
+합계 4
+lrwxrwxrwx 1 root root   16 2019-12-11 13:44 jdk1.7.0_67-cloudera -> /usr/local/java8
+drwxr-xr-x 8 root root 4096 2019-12-06 14:36 jdk1.7.0_67-cloudera.bak
+
+[root@lx02 ~]# cd /usr/java
+[root@lx02 java]# ls
+jdk1.7.0_67-cloudera  jdk1.7.0_67-cloudera.bak
+[root@lx02 java]# mv jdk1.7.0_67-cloudera.bak /root
+
+ppt 29p
+
+Agent 이름 - SmartCar로 변경
+
+# 구성파일 생성
+[datamaster@lx02 ~]$ cd workspace/
+[datamaster@lx02 workspace]$ cd smartcarlog/
+[datamaster@lx02 smartcarlog]$ cd working/
+[datamaster@lx02 working]$ mkdir flume-spool
+[datamaster@lx02 working]$ pwd
+/home/datamaster/workspace/smartcarlog/working
+[datamaster@lx02 working]$ cd flume-spool/
+[datamaster@lx02 flume-spool]$ pwd
+/home/datamaster/workspace/smartcarlog/working/flume-spool
+
+
+# flume-config.txt 파일에서 필요부분만 가져오기
+# 구성파일에 복사
+
+SmartCar.sources = StatusSource
+SmartCar.channels = StatusChannel
+SmartCar.sinks = StatusSink
+
+SmartCar.sources.StatusSource.type = spooldir
+SmartCar.sources.StatusSource.spoolDir = /home/datamaster/workspace/smartcarlog/working/flume-spool
+SmartCar.sources.StatusSource.deletePolicy = immediate
+SmartCar.sources.StatusSource.batchSize = 1000
+
+# filterInterceptor
+SmartCar.sources.StatusSource.interceptors.filterInterceptor.type = regex_filter
+SmartCar.sources.StatusSource.interceptors.filterInterceptor.regx = ^\\d{14}
+SmartCar.sources.StatusSource.interceptors.filterInterceptor.excludeEvents = false
+
+SmartCar.channels.StatusChannel.type = memory
+SmartCar.channels.StatusChannel.capacity = 100000
+SmartCar.channels.StatusChannel.transactionCapacity = 10000
+
+SmartCar.sinks.StatusSink.type = logger
+
+SmartCar.sources.StatusSource.channels = StatusChannel
+SmartCar.sinks.StatusSink.channel = StatusChannel
+
+# 변경내용저장
+
+# 권한 부여
+ 
+[datamaster@lx02 flume-spool]$ chmod 705 /home/datamaster/
+[datamaster@lx02 flume-spool]$ ls -l /home
+합계 4
+drwx---r-x. 4 datamaster wheel 4096 2019-12-11 13:29 datamaster
+
+[datamaster@lx02 smartcarlog]$ su -
+암호:
+[root@lx02 ~]# cd /home
+[root@lx02 home]# ls
+datamaster
+[root@lx02 home]# cd datamaster
+[root@lx02 datamaster]# pwd
+/home/datamaster
+[root@lx02 datamaster]# cd workspace/
+[root@lx02 workspace]# cd smartcarlog/
+[root@lx02 smartcarlog]# ls -l
+합계 20
+drwxr-xr-x 4 datamaster wheel 4096 2019-12-10 14:15 logs
+-rw-r--r-- 1 datamaster wheel 1569 2019-12-10 12:51 pom.xml
+drwxr-xr-x 3 datamaster wheel 4096 2019-12-10 14:36 src
+drwxr-xr-x 6 datamaster wheel 4096 2019-12-11 09:15 target
+drwxr-xr-x 3 datamaster wheel 4096 2019-12-11 14:12 working
+[root@lx02 smartcarlog]# chown flume:wheel working
+[root@lx02 smartcarlog]# ls -l
+합계 20
+drwxr-xr-x 4 datamaster wheel 4096 2019-12-10 14:15 logs
+-rw-r--r-- 1 datamaster wheel 1569 2019-12-10 12:51 pom.xml
+drwxr-xr-x 3 datamaster wheel 4096 2019-12-10 14:36 src
+drwxr-xr-x 6 datamaster wheel 4096 2019-12-11 09:15 target
+drwxr-xr-x 3 flume      wheel 4096 2019-12-11 14:12 working
+
+[root@lx02 smartcarlog]# chmod 775 working/
+[root@lx02 smartcarlog]# ls -l
+합계 20
+drwxr-xr-x 4 datamaster wheel 4096 2019-12-10 14:15 logs
+-rw-r--r-- 1 datamaster wheel 1569 2019-12-10 12:51 pom.xml
+drwxr-xr-x 3 datamaster wheel 4096 2019-12-10 14:36 src
+drwxr-xr-x 6 datamaster wheel 4096 2019-12-11 09:15 target
+drwxrwxr-x 3 flume      wheel 4096 2019-12-11 14:12 working
+[root@lx02 smartcarlog]# ls -l /home
+합계 4
+drwx---r-x. 4 datamaster wheel 4096 2019-12-11 13:29 datamaster
+
+[root@lx02 smartcarlog]# cd working/
+[root@lx02 working]# ls -la
+합계 32
+drwxrwxr-x 3 flume      wheel  4096 2019-12-11 14:12 .
+drwxr-xr-x 9 datamaster wheel  4096 2019-12-11 09:15 ..
+-rw-r--r-- 1 datamaster wheel    17 2019-12-10 14:36 .gitignore
+drwxr-xr-x 2 datamaster wheel  4096 2019-12-11 14:12 flume-spool
+-rw-r--r-- 1 datamaster wheel 15863 2019-12-11 09:15 smartcarlog.jar
+
+
+[root@lx02 smartcarlog]# chown flume:wheel logs/status
+[root@lx02 smartcarlog]# chmod 775 logs/status
+[root@lx02 smartcarlog]# ls -l logs/
+합계 8
+drwxr-xr-x 2 datamaster wheel 4096 2019-12-10 14:38 driving
+drwxrwxr-x 2 flume      wheel 4096 2019-12-10 14:43 status
+
+[root@lx02 status]# rm -rf status_20191210.log
+
+
+# tailing
+[datamaster@lx02 ~]$ tail -f /var/log/flume-ng/flume-cmf-flume-AGENT-lx02.bigdata2019.com.log
+2019-12-11 14:12:09,121 INFO org.apache.flume.node.Application: Starting Channel channel1
+2019-12-11 14:12:09,297 INFO org.apache.flume.instrumentation.MonitoredCounterGroup: Monitored counter group for type: CHANNEL, name: channel1: Successfully registered new MBean.
+2019-12-11 14:12:09,298 INFO org.apache.flume.instrumentation.MonitoredCounterGroup: Component type: CHANNEL, name: channel1 started
+2019-12-11 14:12:09,298 INFO org.apache.flume.node.Application: Starting Sink sink1
+2019-12-11 14:12:09,304 INFO org.apache.flume.node.Application: Starting Source source1
+2019-12-11 14:12:09,307 INFO org.apache.flume.source.NetcatSource: Source starting
+2019-12-11 14:12:09,322 INFO org.apache.flume.source.NetcatSource: Created serverSocket:sun.nio.ch.ServerSocketChannelImpl[/127.0.0.1:9999]
+2019-12-11 14:12:09,398 INFO org.mortbay.log: Logging to org.slf4j.impl.Log4jLoggerAdapter(org.mortbay.log) via org.mortbay.log.Slf4jLog
+2019-12-11 14:12:09,635 INFO org.mortbay.log: jetty-6.1.26.cloudera.4
+2019-12-11 14:12:09,722 INFO org.mortbay.log: Started SelectChannelConnector@0.0.0.0:41414
+
+[root@lx02 smartcarlog]# sudo -u flume java -cp working/smartcarlog.jar com.bigdata2019.smartcar.GenStatusLog  20191211 1
+finished
+[root@lx02 smartcarlog]# mv /home/datamaster/workspace/smartcarlog/logs/status/status_20191211.log /home
+[root@lx02 smartcarlog]# cd working/
+[root@lx02 working]# cd ..
+[root@lx02 smartcarlog]# sudo -u flume java -cp working/smartcarlog.jar com.bigdata2019.smartcar.GenStasLog  20191211 5
+finished
+[root@lx02 smartcarlog]# ls -l logs
+합계 8
+drwxr-xr-x 2 datamaster wheel 4096 2019-12-10 14:38 driving
+drwxrwxr-x 2 flume      wheel 4096 2019-12-11 14:47 status
+[root@lx02 smartcarlog]# ls -l logs/status
+합계 6780
+-rw-r--r-- 1 flume flume 6938866 2019-12-11 14:48 status_20191211.log
+[root@lx02 smartcarlog]# ls -l working/flume-spool/
+합계 0
+[root@lx02 smartcarlog]# mv logs/status/status_20191211.log working/flume-spool/
+[root@lx02 smartcarlog]# ls -l working/flume-spool/
+합계 0
+
+
+
+
+
