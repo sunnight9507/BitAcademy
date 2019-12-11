@@ -23,5 +23,6 @@
 #### [4주차](https://github.com/sunnight9507/Bit_Academy/tree/master/4%EC%A3%BC%EC%B0%A8)
 
 - Git을 이용한 로그시뮬레이터 설치
+- 빅데이터 수집 환경구성(Flume, Kafka)
 
 #### [참고 사이트](http://www.bitacademy.com/Course/Innovation/Course_Innovation_Ai_Bigdata.asp)
