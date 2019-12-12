@@ -1,0 +1,228 @@
+# 카프카 토픽 생성
+[root@lx02 working]# kafka-topics --create --zookeeper lx02.bigdata2019:2181 --replication-factor 1 --partitions 1 --topic SmartCar-Topic
+
+# 카프카 Comsumer 사용
+[root@lx02 working]# kafka-console-consumer --bootstrap-server lx02.bigdata2019.com:2181 --topic SmartCar-Topic --from-beginning
+
+# 카프카 Producer 사용
+# 새로운 콘솔창 생성
+# lx02 두개 켜져있어야 된다.
+[root@lx02 working]# kafka-console-producer --broker-list lx02.bigdata2019.com:9092 --topic SmartCar-Topic
+
+
+# 지우고
+kafka-topics –delete –zookeeper lx02.bigdata2019.com:2181 –topic SmartCar-Topic
+# 다시 만들고
+kafka-topics --create --zookeeper lx02.bigdata2019:2181 --replication-factor 1 --partitions 1 --topic SmartCar-Topic
+
+kafka-console-consumer --bootstrap-server lx02.bigdata2019.com:9092 --topic SmartCar-Topic --from-beginning
+
+
+### flume 구성파일 변경
+SmartCar.sources = StatusSource DrivingSource
+SmartCar.channels = StatusChannel DrivingChannel
+SmartCar.sinks = StatusSink DrivingSink
+
+SmartCar.sources.StatusSource.type = spooldir
+SmartCar.sources.StatusSource.spoolDir = /home/datamaster/workspace/smartcarlog/working/flume-spool
+SmartCar.sources.StatusSource.deletePolicy = immediate
+SmartCar.sources.StatusSource.batchSize = 1000
+
+# filterInterceptor
+SmartCar.sources.StatusSource.interceptors.filterInterceptor.type = regex_filter
+SmartCar.sources.StatusSource.interceptors.filterInterceptor.regx = ^\\d{14}
+SmartCar.sources.StatusSource.interceptors.filterInterceptor.excludeEvents = false
+
+SmartCar.channels.StatusChannel.type = memory
+SmartCar.channels.StatusChannel.capacity = 100000
+SmartCar.channels.StatusChannel.transactionCapacity = 10000
+
+SmartCar.sinks.StatusSink.type = logger
+
+
+SmartCar.sources.StatusSource.channels = StatusChannel
+SmartCar.sinks.StatusSink.channel = StatusChannel
+
+# Driving
+SmartCar.sources.DrivingSource.type = exec
+SmartCar.sources.DrivingSource.command = tail -F /home/datamaster/workspace/smartcarlog/working/logs/driving/driving.log
+SmartCar.sources.DrivingSource.restart = true
+SmartCar.sources.DrivingSource.batchSize = 1000
+
+SmartCar.channels.DrivingChannel.type = memory
+SmartCar.channels.DrivingChannel.capacity= 100000
+SmartCar.channels.DrivingChannel.transactionCapacity = 10000
+
+SmartCar.sinks.DrivingSink.type = org.apache.flume.sink.kafka.KafkaSink
+SmartCar.sinks.DrivingSink.topic = SmartCar-Topic
+SmartCar.sinks.DrivingSink.brokerList = lx02.bigdata2019.com:9092
+SmartCar.sinks.DrivingSink.requiredAcks = 1
+SmartCar.sinks.DrivingSink.batchSize = 1000
+
+SmartCar.sources.DrivingSource.channels = DrivingChannel
+SmartCar.sinks.DrivingSink.channel = DrivingChannel
+
+# 변경 후 재시작
+
+[root@lx02 working]# cd /home
+[root@lx02 home]# cd datamaster/
+[root@lx02 datamaster]# cd workspace/
+[root@lx02 workspace]# pwd
+/home/datamaster/workspace
+[root@lx02 workspace]# clear
+[root@lx02 workspace]# cd smartcarlog/
+[root@lx02 smartcarlog]# cd logs/
+[root@lx02 logs]# ls -l
+합계 8
+drwxr-xr-x 2 datamaster wheel 4096 2019-12-10 14:38 driving
+drwxrwxr-x 2 flume      wheel 4096 2019-12-11 14:50 status
+[root@lx02 logs]# cd driving/
+[root@lx02 driving]# rm -rf driving.log
+[root@lx02 driving]# cd ..
+[root@lx02 logs]# cd ..
+[root@lx02 smartcarlog]# java -cp working/smartcarlog.jar com.bigdata2019.smartcar.GenDrivingLog 20191212 10
+
+
+# flume 재시작
+
+
+tail -f /var/log/flume-ng/flume-cmf-flume-AGENT-lx02.bigdata2019.com.log
+
+
+
+##### 적재 기능 구현
+# 변경 후 재시작
+SmartCar.sources = StatusSource DrivingSource
+SmartCar.channels = StatusChannel DrivingChannel
+SmartCar.sinks = StatusSink DrivingSink
+
+SmartCar.sources.StatusSource.type = spooldir
+SmartCar.sources.StatusSource.spoolDir = /home/datamaster/workspace/smartcarlog/working/flume-spool
+SmartCar.sources.StatusSource.deletePolicy = immediate
+SmartCar.sources.StatusSource.batchSize = 1000
+SmartCar.sources.StatusSource.interceptors = filterInterceptor timeInterceptor typeInterceptor collectDayInterceptor
+
+# filterInterceptor
+SmartCar.sources.StatusSource.interceptors.filterInterceptor.type = regex_filter
+SmartCar.sources.StatusSource.interceptors.filterInterceptor.regx = ^\\d{14}
+SmartCar.sources.StatusSource.interceptors.filterInterceptor.excludeEvents = false
+
+# timeInterceptor
+SmartCar.sources.StatusSource.interceptors.timeInterceptor.type = timestamp
+SmartCar.sources.StatusSource.interceptors.timeInterceptor.preserveExisting = true
+
+# typeInterceptor
+SmartCar.sources.StatusSource.interceptors.typeInterceptor.type = static
+SmartCar.sources.StatusSource.interceptors.typeInterceptor.key = logType
+SmartCar.sources.StatusSource.interceptors.typeInterceptor.value = status
+
+# collectDayInterceptor
+SmartCar.sources.StatusSource.interceptors.collectDayInterceptor.type = com.bigdata2017.smartcar.flume.interceptor.CollectDayInterceptor$Builder
+
+SmartCar.channels.StatusChannel.type = memory
+SmartCar.channels.StatusChannel.capacity = 100000
+SmartCar.channels.StatusChannel.transactionCapacity = 10000
+
+# SmartCar.sinks.StatusSink.type = logger
+SmartCar.sinks.StatusSink.type = hdfs
+SmartCar.sinks.StatusSink.hdfs.path = /smartcar/collection/%{logType}/workdate=%Y%m%d
+SmartCar.sinks.StatusSink.hdfs.filePrefix = %{logType}
+SmartCar.sinks.StatusSink.hdfs.fileSuffix = .log
+SmartCar.sinks.StatusSink.hdfs.fileType = DataStream
+SmartCar.sinks.StatusSink.hdfs.writeFormat = Text
+SmartCar.sinks.StatusSink.hdfs.batchSize = 10000
+SmartCar.sinks.StatusSink.hdfs.rollInterval = 0
+SmartCar.sinks.StatusSink.hdfs.rollCount = 0
+SmartCar.sinks.StatusSink.hdfs.idleTimeout = 100
+SmartCar.sinks.StatusSink.hdfs.callTimeout = 600000
+SmartCar.sinks.StatusSink.hdfs.rollSize = 67108864
+SmartCar.sinks.StatusSink.hdfs.threadsPoolSize = 10
+
+SmartCar.sources.StatusSource.channels = StatusChannel
+SmartCar.sinks.StatusSink.channel = StatusChannel
+
+# Driving
+SmartCar.sources.DrivingSource.type = exec
+SmartCar.sources.DrivingSource.command = tail -F /home/datamaster/workspace/smartcarlog/working/logs/driving/driving.log
+SmartCar.sources.DrivingSource.restart = true
+SmartCar.sources.DrivingSource.batchSize = 1000
+
+SmartCar.channels.DrivingChannel.type = memory
+SmartCar.channels.DrivingChannel.capacity= 100000
+SmartCar.channels.DrivingChannel.transactionCapacity = 10000
+
+SmartCar.sinks.DrivingSink.type = org.apache.flume.sink.kafka.KafkaSink
+SmartCar.sinks.DrivingSink.topic = SmartCar-Topic
+SmartCar.sinks.DrivingSink.brokerList = lx02.bigdata2019.com:9092
+SmartCar.sinks.DrivingSink.requiredAcks = 1
+SmartCar.sinks.DrivingSink.batchSize = 1000
+
+SmartCar.sources.DrivingSource.channels = DrivingChannel
+SmartCar.sinks.DrivingSink.channel = DrivingChannel
+
+
+############# 리눅스에서 git가지고와 빌드
+
+# git clone
+[datamaster@lx02 workspace]$ git clone git://github.com/sunnight9507/smartcar.flume.interceptor.git
+Cloning into 'smartcar.flume.interceptor'...
+remote: Enumerating objects: 48, done.
+remote: Total 48 (delta 0), reused 0 (delta 0), pack-reused 48
+Receiving objects: 100% (48/48), 4.97 KiB | 0 bytes/s, done.
+Resolving deltas: 100% (13/13), done.
+Checking connectivity... done.
+
+# 확인
+[datamaster@lx02 workspace]$ cd smartcar.flume.interceptor/
+[datamaster@lx02 smartcar.flume.interceptor]$ pwd
+/home/datamaster/workspace/smartcar.flume.interceptor
+
+# 다운
+[datamaster@lx02 smartcar.flume.interceptor]$ mvn -Dhttps.protocols=TLSv1.2 clean install
+
+# 복사
+[root@lx02 ~]# cp /home/datamaster/workspace/smartcar.flume.interceptor/release/com.bigdata2017.smartcar.flume.inteceptor-1.0.jar /opt/cloudera/parcels/CDH-5.16.2-1.cdh5.16.2.p0.8/lib/flume-ng/lib/
+
+# 실시간 log 확인
+[root@lx02 ~]# tail -f /var/log/flume-ng/flume-cmf-flume-AGENT-lx02.bigdata2019.com.log
+
+# tail은 실행 중 / 새로운 콘솔 창
+[root@lx02 smartcarlog]# pwd
+/home/datamaster/workspace/smartcarlog
+[root@lx02 smartcarlog]# ls -l ./logs/status/
+합계 0
+/home/datamaster/workspace/smartcarlog
+[root@lx02 smartcarlog]# ls -l ./logs/status/
+합계 0
+[root@lx02 smartcarlog]# sudo -u flume java -cp working/smartcarlog.jar com.bigdata2019.smartcar.GenStatusLog 20191212 10
+finished
+# 로그 생성 확인
+[root@lx02 smartcarlog]# ls -l ./logs/status/
+합계 13556
+-rw-r--r-- 1 flume flume 13880544 2019-12-12 15:02 status_20191212.log
+
+# 옮기기
+# tail창에 옮기는 과정이 나타남
+[root@lx02 smartcarlog]# mv ./logs/status/status_20191212.log ./working/flume-spool/
+
+[root@lx02 smartcarlog]# ls -l ./working/flume-spool/
+합계 0
+[root@lx02 smartcarlog]# hdfs dfs -ls -R /smartcar
+drwxr-xr-x   - flume supergroup          0 2019-12-12 15:04 /smartcar/collection
+drwxr-xr-x   - flume supergroup          0 2019-12-12 15:04 /smartcar/collection/status
+drwxr-xr-x   - flume supergroup          0 2019-12-12 15:05 /smartcar/collection/status/workdate=20191212
+-rw-r--r--   2 flume supergroup   16472724 2019-12-12 15:05 /smartcar/collection/status/workdate=20191212/status.1576130636895.log
+
+
+
+
+
+
+
+
+
+
+
+
+
+
