@@ -260,4 +260,10 @@ Running: /usr/local/java8/bin/java -client -Dstorm.options= -Dstorm.home=/usr/lo
 [root@lx02 smartcarlog]# hbase shell
 hbase(main):001:0> count 'table_smartcar_driving'
 hbase(main):001:0> scan 'table_smartcar_driving‘, { LIMIT => 20 }
-hbase(main):010:0> get "20191213"
+
+[root@lx02 smartcarlog]# redis-cli
+127.0.0.1:6379> keys *
+1) "20191213"
+127.0.0.1:6379> smembers "20191213"
+1) "T0001-20191213000500"
+2) "T0001-20191213001000"
