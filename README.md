@@ -25,4 +25,9 @@
 - Git을 이용한 로그시뮬레이터 설치
 - 빅데이터 수집, 적재 환경구성 및 기능 테스트(Flume,Kafka,Storm,HBase)
 
+#### [5주차](https://github.com/sunnight9507/Bit_Academy/tree/master/5%EC%A3%BC%EC%B0%A8)
+
+- 빅데이터 탐색 환경구성 및 테스트(Hive, Spark)
+- 자바, Mysql 연동 및 테스트
+
 #### [참고 사이트](http://www.bitacademy.com/Course/Innovation/Course_Innovation_Ai_Bigdata.asp)
