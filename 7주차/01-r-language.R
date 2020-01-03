@@ -250,3 +250,66 @@ test_ifelse <- function(x) {
 test_ifelse(10L)
 test_ifelse(0L)
 test_ifelse(-1L)
+
+# 반복문 : repeat
+test_repeat <- function(to = 9){ # 함수의 인자에 기본값
+  # 1부터 함수의 인수 to로 넘어온 숫자까지 루프를 돌며 출력
+  num <- 1
+  
+  repeat { # 반복 조건을 체크하지 않으므로 최소 1회는 실행된다.
+    print(num)
+        
+    
+    # 종료 조건
+    if(num > to){
+      break # 루프를 탈출
+    }
+    num <- num + 1
+  }
+}
+
+test_repeat(10)
+test_repeat(to = 7)
+test_repeat()
+
+test_while <- function(to = 9) {
+  # 1부터 to까지 루프를 돌며 출력\
+  num <- 1
+  while(num <= to){
+    print(num)
+    # 조건 판별 객체 갱신
+    num <- num + 1
+  }
+}
+
+test_while(5)
+
+test_for <- function(){
+  nums = c(1,2,3,4,5,6,7,8,9)
+  
+  for (num in nums){
+    print(num)
+  }
+}
+
+test_for()
+
+# 연습문제
+# 구구단 출력 함수
+
+test_gugu <- function(){
+  # 2단 - 9단까지 루프
+  num <- 2
+  
+  while (num <= 9){
+    a <- 1
+    while (a <= 9){
+      print(paste(num,"X",a,"=",num*a))
+      a <- a + 1
+    }
+    num <- num + 1
+    print("")
+  }
+}
+
+test_gugu()
