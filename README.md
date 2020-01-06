@@ -33,6 +33,6 @@
 
 #### [7주차](https://github.com/sunnight9507/Bit_Academy/tree/master/7%EC%A3%BC%EC%B0%A8)
 
-- R 기본적인 문법 교육 및 
+- R 기본적인 문법 교육 및 실습
 
 #### [참고 사이트](http://www.bitacademy.com/Course/Innovation/Course_Innovation_Ai_Bigdata.asp)
