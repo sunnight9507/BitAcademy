@@ -67,7 +67,144 @@ def string_oper():
     print("R in in s2? ", "R" in s2)
     print("P in not in s2? ", "P" not in s2)
 
+def search_methods():
+    """
+    문자열 검색 관련 메서드들
+    """
+    s = 'I Like Python, I Like Java'
+
+    # 검색어의 갯수 : count
+    print("Count of Like : ", s.count("Like"))
+    # 내부 검색어의 위치 확인 : find, index
+    print("Find Like : ", s.find("Like")) # 첫번째 검색의 위치
+    print("Find 2nd Like : ", s.find("Like", 3)) # 검색 범위의 제한
+    print("Find 3rd Like : ", s.find("Like", 10)) # 찾는 검색어가 없으면 -1
+
+    # 역방향 검색 : rfind, rindex
+    print("Reverse Find Like : ", s.rfind("Like")) # 결과 값은 정인덱스
+    print("Reverse 2nd Find Like : ", s.rfind("Like", 0, 17)) # 검색 범위 제한
+
+    # index로 검색
+    print("Index Like : ", s.index("Like"))
+    # 검색어 범위 제한 등 다른 것들은 find와 동일
+    # rindex는 rfind와 동일한 기능
+
+    if "JS" in s:
+        print("Index JS : ", s.index("JS")) # 없는 검색어의 index -> Error
+
+def modify_replace_methods():
+    """
+    편집과 치환
+    """
+
+    s = "    Alice and the Heart Queen    " # 좌우에 공백 문자
+    print("LSTRIP : [", s.lstrip(), "]", sep="") # 왼쪽 공백 제거
+    print("RSTRIP : [", s.rstrip(), "]", sep="")  # 왼쪽 공백 제거
+    print("LSTRIP : [", s.strip(), "]", sep="")  # 왼쪽 공백 제거
+
+    s = "-----Alice and the Heart Queen-----"
+    # 공백 문자가 아닌 다른 문자를 strip
+    print("STRIP - : [", s.strip("-"), "]", sep="") # 좌우의 - 문자를 제거
+
+    s = "I Like Java"
+    # 치환 : replace
+    print("REPLACE Java -> Python : ", s.replace("Java", "Python"))
+
+    # 원본 자체는 변경되지 않는다
+    print("ORIGINAL str : ", s)
+
+def split_join_methods():
+    """
+    문자열의 분리와 결합
+    """
+    s = "Ham and Cheese and Breads and Ketchup"
+    # 구분자 and를 기준으로 문자열 분리
+    ings = s.split(" and ") # split 기본 분리 문자는 공백문자
+    print("Words : ", ings, type(ings))
+
+    # s의 왼쪽 두 개 단어를 분리
+    print("LSPLIT : ", s.split(" and ", 2))
+    # s의 오른쪽 두 개 단어를 분리
+    print("RSPLIT : ", s.rsplit(" and ", 2))
+
+    # 합치기 : join
+    print("재료 목록 : ", ",".join(ings))
+
+    lines = \
+    """Java Programming
+    Python Programming
+    HTML Programming
+    """
+    print("ORIGINAL : ", lines)
+
+    print("SPLIT lines : ", lines.split())
+    print("SPLITLINES lines : ", lines.splitlines())
+
+def string_format():
+    """
+    문자열 포매팅 연습
+    """
+    # C 스타일의 문자열 포맷
+    # %s, %c, %d, %f, %o, %x, %%, %n
+    fmt = "%d개의 %s 중에서 %d개를 먹었다"
+    print(fmt % (10, "사과", 3)) # 문자열 포맷과 데이터의 포맷이 일치해야 한다
+
+    fmt2 = "현재 이자율은 %f%% 입니다." # %% -> % 글자 표시
+    print(fmt2 % 1.24)
+
+    fmt3 = "현재 이자율은 %.2f%%입니다." # %.2f -> 소숫점 2째 자리까지 출력
+    print(fmt3 % 1.24)
+
+    # named formatting
+    fmt4 = "%(total)d개의 %(item)s 중에서 %(eat)d개를 먹었다"
+    # 데이터의 전달 순서는 중요하지 않다. 필요한 데이터는 모두 전달 해 줘야 함
+    print(fmt4 % {"total" : 10, "eat" : 5, "item" : "오렌지"})
+
+    # format 메서드
+    fmt5 = "{}개의 {} 중에서 {}개를 먹었다." # {} -> PlaceHolder
+    print(fmt5.format(10, "사과", 3))
+
+     # named Placeholder
+    fmt6 = "{total}개의 {item}중에서 {eat}개를 먹었다."
+    print(fmt6.format(item="배", eat = 3, total = 5)) # 인자값으로 전달
+
+    # 사전을 이용한 데이터의 포매팅 -> format_map 메서드
+    print(fmt6.format_map({
+        "total" : 5,
+        "item" : "키위",
+        "eat" : 2
+    }))
+
+
 
 if __name__ == "__main__":
-    define_str()
-    string_oper()
+    # define_str()
+    # string_oper()
+    # search_methods()
+    # modify_replace_methods()
+    # split_join_methods()
+    string_format()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
