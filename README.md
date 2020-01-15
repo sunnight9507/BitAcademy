@@ -35,8 +35,8 @@
 
 - R 기본적인 문법 교육 및 실습 
 
-### [8주차](https://github.com/sunnight9507/Bit_Academy/tree/master/8%EC%A3%BC%EC%B0%A8)
+#### [8주차](https://github.com/sunnight9507/Bit_Academy/tree/master/8%EC%A3%BC%EC%B0%A8)
 
-- Python 기본적인 문법 교육 및 실습 
+- Python 기초, 심화 교육 및 실습 
 
 #### [참고 사이트](http://www.bitacademy.com/Course/Innovation/Course_Innovation_Ai_Bigdata.asp)
