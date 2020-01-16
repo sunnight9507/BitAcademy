@@ -1,0 +1,45 @@
+https://www.cloudera.com/downloads/hortonworks-sandbox/hdp.html
+Virtual Box
+2.5 install
+-----------------------
+Virtual Box
+새로 추가 다운받은 ova설치
+Alt + F5 실행
+
+sandbox login : root
+pw : hadoop
+
+http://127.0.0.1:8888(jupyter notebook 삭제 후 진행)
+New To HDP - Launch Dashboard
+id : maria_dev
+pw : maria_dev
+---------------------------
+공유폴더 설정
+
+파일 생성(share)
+속성 - 공유 - 공유 - Everyone 추가 (읽기/쓰기)
+
+고급 공유 설정 - 모든 네트워크 - 암호로 보호된 공유 - 암호 보호 공유 끄기
+
+리눅스 창
+참고 : (https://zenoahn.tistory.com/27)
+yum groupinstall "Development Tools"
+yum update
+
+VirtualBox - 설정 - CD 삽입
+VirtualBox - 설정 - 공유폴더 - 공유 추가 - 파일 선택 / 자동 마운트 / 항상 사용 / 마운트 지점 - /mnt/share
+
+mount -r /dev/cdrom /media
+/media/VBoxLinuxAdditions.run
+
+reboot
+
+VirtualBox OS 설정 - 일반 - 고급 - 클립보드 공유 - 양방향
+
+vi /etc/fstab
+(맨 아래에 아래 코드 추가)
+//192.168.1.111/share /mnt/share cifs username=root,password=hadoop 0 0
+
+sudo mount -a
+
+cd /mnt/share에서 파일 있는지 확인
