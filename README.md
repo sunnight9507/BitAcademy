@@ -39,7 +39,7 @@
 
 - Python 기초, 심화 교육 및 실습 
 
-### [9주차](https://github.com/sunnight9507/Bit_Academy/tree/master/9%EC%A3%BC%EC%B0%A8)
+#### [9주차](https://github.com/sunnight9507/Bit_Academy/tree/master/9%EC%A3%BC%EC%B0%A8)
 
 - 가상환경 설치 및 세팅 실습
 
