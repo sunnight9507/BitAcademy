@@ -43,3 +43,113 @@ vi /etc/fstab
 sudo mount -a
 
 cd /mnt/share에서 파일 있는지 확인
+---------------------------------------------------------------------------
+Xshell 이용
+파일 - 새로만들기 - 호스트 : 127.0.0.1 포트 : 2222
+
+공유폴더 설정
+
+root에 파일 이동
+mv (파일명) ~
+
+# 파일 확인
+[root@sandbox ~]# ls
+anaconda-ks.cfg  build.out    hdp          install.log.syslog  source.tar       start_hbase.sh  test.txt
+blueprint.json   data.tar.gz  install.log  sandbox.info        start_ambari.sh  test
+
+# 압축 풀기
+[root@sandbox ~]# tar xvfz data.tar.gz
+data/
+data/2M.ID.CONTENTS
+data/2M.TITLE.ID
+data/10K.ID.CONTENTS
+data/RandomString.txt
+data/README.txt
+data/2M.SRCID.DSTID
+[root@sandbox ~]# cd data
+[root@sandbox data]# ls
+10K.ID.CONTENTS  2M.ID.CONTENTS  2M.SRCID.DSTID  2M.TITLE.ID  RandomString.txt  README.txt
+
+
+[root@sandbox data]# hadoop fs -mkdir /input/wex
+[root@sandbox data]# hadoop fs -copyFromLocal * /input/wex/
+
+# 복사 되었는지 확인
+# 리눅스 단에서는 보이지 않는다.
+[root@sandbox data]# hadoop fs -ls /input/wex
+Found 6 items
+-rw-r--r--   1 root hdfs    9735683 2020-01-17 03:31 /input/wex/10K.ID.CONTENTS
+-rw-r--r--   1 root hdfs 2506926541 2020-01-17 03:32 /input/wex/2M.ID.CONTENTS
+-rw-r--r--   1 root hdfs  151641370 2020-01-17 03:32 /input/wex/2M.SRCID.DSTID
+-rw-r--r--   1 root hdfs   73550219 2020-01-17 03:32 /input/wex/2M.TITLE.ID
+-rw-r--r--   1 root hdfs       1366 2020-01-17 03:32 /input/wex/README.txt
+-rw-r--r--   1 root hdfs   33481780 2020-01-17 03:32 /input/wex/RandomString.txt
+[root@sandbox data]# cd ..
+
+# source.tar 압축풀기
+[root@sandbox source]# tar xvf source.tar
+
+# output2 생성 및 확인
+[root@sandbox source]# hadoop fs -mkdir /output2
+[root@sandbox source]# hadoop fs -ls /output2
+
+# output2 지우기
+[root@sandbox ~]# hadoop fs -rmr /output2
+rmr: DEPRECATED: Please use 'rm -r' instead.
+20/01/17 03:55:18 INFO fs.TrashPolicyDefault: Moved: 'hdfs://sandbox.hortonworks.com:8020/output2' to trash at: hdfs://sandbox.hortonworks.com:8020/user/root/.Trash/Current/output2
+
+[root@sandbox ~]# cd source
+[root@sandbox source]# ls
+CountCitation  CountTrigram  JoinIDTitle2  pig  TopN  WordCount  WordCount2
+[root@sandbox source]# cd WordCount
+
+# Maven 설치
+wget https://www.kernel.org/pub/software/scm/git/git-2.6.4.tar.gz
+tar xvfz git-2.6.4.tar.gz
+cd git-2.6.4
+./configure --prefix=/usr/local
+
+make
+make install
+
+git --version
+
+wget http://apache.mirror.cdnetworks.com/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
+
+tar xvfz apache-maven-3.3.9-bin.tar.gz
+mv apache-maven-3.3.9 /usr/local/maven3.3.9
+
+cd /usr/local/maven3.3.9/
+
+경로 설정
+vi /etc/profile
+- 제일 아래에다가
+# Maven
+M2_HOME=/usr/local/maven3.3.9
+export PATH=$PATH:$M2_HOME/bin
+
+# 경로 들어갔는지 확인
+source /etc/profile
+echo $PATH
+
+mvn --version
+
+mvn compile
+mvn install
+
+cd WordCount /
+
+# 파일 확인
+hadoop fs -ls /input
+
+# 경로 확인 README.txt 확인
+hadoop jar target/WordCount-1.0-SNAPSHOT.jar WordCount /input/README.txt /output/WordCount
+
+# 파일 가져오기
+[root@sandbox WordCount]# hadoop fs -copyToLocal /output/WordCount/part-r-00000
+
+# part-r-00000 확인
+[root@sandbox WordCount]# ls -al
+
+# 파일 확인
+[root@sandbox WordCount]# cat part-r-00000
