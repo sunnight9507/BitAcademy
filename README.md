@@ -43,7 +43,7 @@
 
 - 가상환경 설치 및 세팅 실습
 
-### [10주차](https://github.com/sunnight9507/Bit_Academy/tree/master/10%EC%A3%BC%EC%B0%A8)
+#### [10주차](https://github.com/sunnight9507/Bit_Academy/tree/master/10%EC%A3%BC%EC%B0%A8)
 
 - Python for Data Analysis의 이론 및 실습
 
