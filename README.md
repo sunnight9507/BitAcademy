@@ -47,7 +47,7 @@
 
 - Python for Data Analysis의 이론 및 실습
 
-### [12주차](https://github.com/sunnight9507/Bit_Academy/tree/master/12%EC%A3%BC%EC%B0%A8)
+#### [12주차](https://github.com/sunnight9507/Bit_Academy/tree/master/12%EC%A3%BC%EC%B0%A8)
 
 - 미니프로젝트 : 네이버 영화 평점 데이터를 이용한 사용자별 영화 추천 시스템
 
