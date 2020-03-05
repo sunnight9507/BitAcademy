@@ -53,7 +53,7 @@
 
 #### [13주차-](https://github.com/sunnight9507/Bit_Academy/tree/master/13%EC%A3%BC%EC%B0%A8)
 
-- 14주차 : 코로나 바이러스로 인한 1주 휴강
+- 14-15주차 : 코로나 바이러스로 인한 2주 휴강
 - 머신러닝
 
 #### [참고 사이트](http://www.bitacademy.com/Course/Innovation/Course_Innovation_Ai_Bigdata.asp)
