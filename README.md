@@ -51,9 +51,9 @@
 
 - 미니프로젝트 : 네이버 영화 평점 데이터를 이용한 사용자별 영화 추천 시스템
 
-#### [13주차-](https://github.com/sunnight9507/Bit_Academy/tree/master/13%EC%A3%BC%EC%B0%A8)
+#### [13주차](https://github.com/sunnight9507/Bit_Academy/tree/master/13%EC%A3%BC%EC%B0%A8)
 
-- 14-15주차 : 코로나 바이러스로 인한 2주 휴강
 - 머신러닝
+- 코로나 19로 인해 1달간 휴강
 
 #### [참고 사이트](http://www.bitacademy.com/Course/Innovation/Course_Innovation_Ai_Bigdata.asp)
