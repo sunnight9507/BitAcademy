@@ -56,4 +56,8 @@
 - 머신러닝
 - 코로나 19로 인해 1달간 휴강
 
+#### [14주차](https://github.com/sunnight9507/Bit_Academy/tree/master/14%EC%A3%BC%EC%B0%A8)
+
+- 머신러닝 복습
+
 #### [참고 사이트](http://www.bitacademy.com/Course/Innovation/Course_Innovation_Ai_Bigdata.asp)
