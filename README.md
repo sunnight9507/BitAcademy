@@ -60,4 +60,9 @@
 
 - 머신러닝 복습
 
+#### [16주차](https://github.com/sunnight9507/Bit_Academy/tree/master/16%EC%A3%BC%EC%B0%A8)
+
+- ----- Project -----
+- Window Python 환경 구축
+
 #### [참고 사이트](http://www.bitacademy.com/Course/Innovation/Course_Innovation_Ai_Bigdata.asp)
