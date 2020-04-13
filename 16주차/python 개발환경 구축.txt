@@ -1,0 +1,79 @@
+- Window
+
+1. anaconda install
+- version : 64bit / python 3.7
+
+- Advanced Options
+1) Add Anaconda to my PATH environment variable
+- PATH에 Anaconda 추가할지 여부
+- 아나콘다 외 파이썬 인터프리터 사용할 때는 체크 해제
+- 선택할 경우 윈도우 CMD창 경로와 상관없이 아나콘다를 파이썬으로 인식
+2) Register Anaconda as my default Python 3.7
+- 아나콘다를 기본 파이썬으로 등록할지 여부를 선택
+- 개발 도구, 에디터에서 아나콘다를 파이썬으로 인식
+
+install 후
+cmd 창에서 python --version 확인
+
+Anaconda Prompt Click
+
+- 최신 버전으로 업데이트(최신버전이 아닐 경우 Proceed([Y]/n) 이 출력
+conda update --name="base" --channel="defaults" conda
+conda update -n base -c defaults conda
+
+- 가상 환경 생성
+conda create -n 가상환경이름 python=버전 / 3.6 추천
+conda create -n pyqt_env python=3.6
+
+- 가상환경 활성화 / 비활성화
+activate 가상환경이름
+activate pyqt_env
+
+deactivate 가상환경이름
+deactivate pyqt_env
+
+- 가상환경에 패키지 설치(1,2,3 중 어떤 방법으로 하던지 상관없다.)
+1)
+conda create -n 가상환경이름 python=버전 패키지이름
+conda create -n pyqt_env python=3.7 pyqt5
+2)
+conda install --name 가상환경이름 패키지이름
+conda install --name pyqt_env pyqt5
+3)
+(base) >> activate 가상환경이름
+(가상환경이름) >> pip install 패키지이름
+(base) >> activate pyqt_env
+(pyqt_env) >> pip install pyqt5
+
+- 패키지 리스트 확인
+conda list
+
+- 원하는 가상환경의 패키지 리스트 확인
+conda list -n 가상환경이름
+
+- 설치된 가상환경 리스트 확인
+conda info --envs
+
+- 가상환경 삭제
+conda remove -n 가상환경이름 --all
+
+
+2. PyCharm install
+check
+- 64-bit launcher
+- .py
+
+install후 
+- Do not import settings
+
+PyCharm 실행
+설정 configure -> Settings -> Python Interpreter -> Project Interpreter(Show All)
+-> + -> conda Environment -> Existing environment -> 구축한 가상환경 click
+-> Make available to all projects
+
+create New Project
+
+
+
+
+
