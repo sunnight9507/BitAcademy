@@ -64,5 +64,6 @@
 
 - ----- Project -----
 - Window Python 환경 구축
+- Data Processing
 
 #### [참고 사이트](http://www.bitacademy.com/Course/Innovation/Course_Innovation_Ai_Bigdata.asp)
