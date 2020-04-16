@@ -22,7 +22,7 @@ conda update --name="base" --channel="defaults" conda
 conda update -n base -c defaults conda
 
 - 가상 환경 생성
-conda create -n 가상환경이름 python=버전 / 3.6 추천
+conda create -n 가상환경이름 python=버전 anaconda / 3.6 추천
 conda create -n pyqt_env python=3.6
 
 - 가상환경 활성화 / 비활성화
