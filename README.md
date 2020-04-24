@@ -67,6 +67,7 @@
 - Data Processing
 
 #### [17주차](https://github.com/sunnight9507/Bit_Academy/tree/master/17%EC%A3%BC%EC%B0%A8)
+- Data Processing & Correlation analysis
 - Data predict
 
 #### [참고 사이트](http://www.bitacademy.com/Course/Innovation/Course_Innovation_Ai_Bigdata.asp)
