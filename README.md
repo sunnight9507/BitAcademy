@@ -66,7 +66,7 @@
 - Window Python 환경 구축
 - Data Processing
 
-#### [17주차](https://github.com/sunnight9507/Bit_Academy/tree/master/17%EC%A3%BC%EC%B0%A8)
+#### [17-18주차](https://github.com/sunnight9507/Bit_Academy/tree/master/17%EC%A3%BC%EC%B0%A8)
 - Data Processing & Correlation analysis
 - Data predict
 
