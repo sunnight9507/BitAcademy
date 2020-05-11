@@ -62,18 +62,18 @@
 
 #### [16-20주차](https://github.com/sunnight9507/Bit_Academy/tree/master/17%EC%A3%BC%EC%B0%A8)
 
-#### ------ Project ------
-- ------ 16주차 -----
+#### ----- Project -----
+------ 16주차 -----
 - Window Python 환경 구축
 - Data Processing
-- ------ 17주차 -----
+------ 17주차 -----
 - Data Processing & Correlation analysis
-- ------ 18주차 -----
+------ 18주차 -----
 - Data Processing & Data predict(GRU)
-- ------ 19주차 -----
+------ 19주차 -----
 - Stocks prediction
 - 화면 설계(draw.io)
-- ------ 20주차 -----
+------ 20주차 -----
 - DB 설계
 
 #### [참고 사이트](http://www.bitacademy.com/Course/Innovation/Course_Innovation_Ai_Bigdata.asp)
