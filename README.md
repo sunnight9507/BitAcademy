@@ -62,7 +62,7 @@
 
 #### [16-20주차](https://github.com/sunnight9507/Bit_Academy/tree/master/17%EC%A3%BC%EC%B0%A8)
 
-> #### ----- Project -----
+#### ------ Project ------
 - ------ 16주차 -----
 - Window Python 환경 구축
 - Data Processing
