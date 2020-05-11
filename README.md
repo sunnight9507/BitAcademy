@@ -60,7 +60,7 @@
 
 - 머신러닝 복습
 
-#### [16-20주차](https://github.com/sunnight9507/Bit_Academy/tree/master/17%EC%A3%BC%EC%B0%A8)
+#### [16-20주차](https://github.com/sunnight9507/Bit_Academy/tree/master/Project)
 
 #### ----- Project -----
 ------ 16주차 -----
