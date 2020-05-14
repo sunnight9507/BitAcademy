@@ -75,5 +75,6 @@
   - 화면 설계(draw.io)
 - 20주차
   - DB 설계
+  - Data Processing & Find best model for each stock
 
 #### [참고 사이트](http://www.bitacademy.com/Course/Innovation/Course_Innovation_Ai_Bigdata.asp)
