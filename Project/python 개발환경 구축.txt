@@ -1,4 +1,4 @@
-- Window
+========== Window ==========
 
 1. anaconda install
 - version : 64bit / python 3.7
@@ -14,6 +14,12 @@
 
 install 후
 cmd 창에서 python --version 확인
+
+jdk donwload(SE Development)
+환경 변수 설정(시스템 변수 - JAVA_HOME, 변수 값 : jdk\bin)
+
+
+
 
 Anaconda Prompt Click
 
@@ -57,6 +63,18 @@ conda info --envs
 - 가상환경 삭제
 conda remove -n 가상환경이름 --all
 
+--------GPU tensorflow---------
+1) GPU Driver download
+2) cuda tookit install (10.0v)
+3) cudnn (10.0v)
+4) pip install tensorflow-gpu==2.0
+
+import tensorflow as tf
+
+# GPU 사용여부
+tf.test.is_gpu_available( cuda_only=False, min_cuda_compute_capability=None )
+# True 확인
+
 
 2. PyCharm install
 check
@@ -73,7 +91,9 @@ PyCharm 실행
 
 create New Project
 
-- Linux Ubuntu 16.04.6
+
+
+========== Linux Ubuntu 16.04.6 ==========
 
 - version 확인
 cat /ect/issue
