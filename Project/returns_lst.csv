@@ -1,0 +1,16 @@
+name,error,returns,stock_name
+"['stock_Jobi', 'price_milk']",0.00038,1.444,stock_Jobi
+"['stock_Jobi', 'price_egg']",0.00028,1.406,stock_Jobi
+"['stock_Jobi', 'onion']",0.00025,1.404,stock_Jobi
+"['stock_Asia', 'green_pepper']",0.00023999999999999998,1.228,stock_Asia
+['stock_Jobi'],0.00029,1.219,stock_Jobi
+"['stock_Asia', 'kospi']",0.00027,1.214,stock_Asia
+"['stock_Asia', 'price_egg']",0.00026000000000000003,1.114,stock_Asia
+"['stock_Jobi', 'exchangerate']",0.00023999999999999998,1.109,stock_Jobi
+['stock_Asia'],0.00029,1.0959999999999999,stock_Asia
+"['stock_Asia', 'cabbage1']",0.00027,1.086,stock_Asia
+"['stock_Asia', 'exchangerate']",0.00037999999999999997,1.07,stock_Asia
+"['stock_Jobi', 'carrot']",0.0003,1.038,stock_Jobi
+"['stock_Asia', 'price_milk']",0.00026000000000000003,1.033,stock_Asia
+"['stock_Asia', 'potato']",0.00027,1.021,stock_Asia
+"['stock_Jobi', 'kospi']",0.0005099999999999999,0.98,stock_Jobi
