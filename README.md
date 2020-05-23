@@ -76,5 +76,9 @@
 - 20주차
   - DB 설계
   - Data Processing & Find best model for each stock
+- 21주차
+  - 데이터 추가
+  - 주가별 상관관계 DB 구축
+  - Data Processing & Find best model for each stock
 
 #### [참고 사이트](http://www.bitacademy.com/Course/Innovation/Course_Innovation_Ai_Bigdata.asp)
