@@ -80,5 +80,7 @@
   - 데이터 추가
   - 주가별 상관관계 DB 구축
   - Data Processing & Find best model for each stock
+- 22주차
+  - 파이프라인 
 
 #### [참고 사이트](http://www.bitacademy.com/Course/Innovation/Course_Innovation_Ai_Bigdata.asp)
