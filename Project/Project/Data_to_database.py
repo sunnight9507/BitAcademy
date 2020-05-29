@@ -25,18 +25,16 @@ def pred(model, pred_x_data, y_true):
     y_scaler = MinMaxScaler()
 
     pred_x_train_scaled = x_scaler.fit_transform(pred_x_data)
-
-    print(y_true)
-    print(y_true.shape)
-    y_true_scaled = y_scaler.fit_transform(y_true)
-
     pred_x = np.expand_dims(pred_x_train_scaled, axis=0)
     pred = model.predict(pred_x)
-    print(pred[0].shape)
+
+    y_true_scaled = y_scaler.fit_transform(y_true)
     pred_rescaled = y_scaler.inverse_transform(pred[0])
     pred = pred_rescaled[:, 0].astype(np.int)
 
     return y_true, pred
+
+
 
 if __name__ == '__main__':
     # GPU 확인
@@ -46,21 +44,25 @@ if __name__ == '__main__':
     data = Predict_stock.load_data()
 
     # data_processing
-    target_lst = Predict_stock.target_lst
-    x_train_scaled, x_test_scaled, y_train_scaled, y_test_scaled, num_x_y_xtrain = Predict_stock.data_processing(data, target_lst)
+    target_lsts = Predict_stock.target_lsts
 
-    # generator 생성
-    generator = Predict_stock.batch_generator(batch_size=256, sequence_length=365, num_x_y_xtrain=num_x_y_xtrain)
 
-    # model 생성
-    model = Predict_stock.init_model(num_x_y_xtrain)
-    # model 불러오기
-    model.load_weights('model/' + str(target_lst).replace('\'', '') + '.h5')
+    for target_lst in target_lsts[:1]:
+        x_train_scaled, x_test_scaled, y_train_scaled, y_test_scaled, num_x_y_xtrain = Predict_stock.data_processing(data, target_lst)
 
-    t, p = pred(model, data[target_lst].shift(1).values[1:], np.array(data[target_lst[0]].values[1:], dtype=np.float))
-    # data[target_name]
-    print(t,p)
+        # generator 생성
+        generator = Predict_stock.batch_generator(batch_size=256, sequence_length=365, num_x_y_xtrain=num_x_y_xtrain)
 
-    del model
+        # model 생성
+        model = Predict_stock.init_model(num_x_y_xtrain)
+        # model 불러오기
+        model.load_weights('model/' + str(target_lst).replace('\'', '') + '.h5')
+
+        t, p = pred(model, data[target_lst].shift(1).values[1:], np.array(data[target_lst[0]].values[1:], dtype=np.float).reshape(-1,1))
+        # data[target_name]
+        # print(t,p)
+
+        del model
+
 
     sys.exit()

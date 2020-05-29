@@ -152,36 +152,54 @@ def callback():
 
     return callbacks
 
-target_lst = ['아시아종묘', 'green_pepper']
+# target_lst = ['아시아종묘', 'green_pepper']
+
+target_lsts = [['아시아종묘', 'green_pepper'],
+               ['아세아텍', 'price_egg'],
+               ['효성오앤비', 'kospi'],
+               ['남해화학', 'price_egg'],
+               ['SPC삼립', 'kospi'],
+               ['조비', 'price_egg'],
+               ['경농', 'green_onion'],
+               ['KPX생명과학', 'cabbage1'],
+               ['KG케미칼', 'potato'],
+               ['농심', 'price_sugar'],
+               ['농우바이오', 'kospi'],
+               ['동방아그로', 'exchangerate'],
+               ['오뚜기', 'onion']]
 
 if __name__ == '__main__':
-    # GPU 확인
-    init()
+    for target_lst in target_lsts[:2]:
+        print('----------' ,target_lst, '------------')
+        # GPU 확인
+        init()
 
-    # data_load
-    data = load_data()
+        # data_load
+        data = load_data()
 
-    # data_processing
-    x_train_scaled, x_test_scaled, y_train_scaled, y_test_scaled, num_x_y_xtrain = data_processing(data, target_lst)
+        # data_processing
+        x_train_scaled, x_test_scaled, y_train_scaled, y_test_scaled, num_x_y_xtrain = data_processing(data, target_lst)
 
-    # generator 생성
-    generator = batch_generator(batch_size=128, sequence_length=365, num_x_y_xtrain = num_x_y_xtrain)
+        # generator 생성
+        generator = batch_generator(batch_size=128, sequence_length=365, num_x_y_xtrain = num_x_y_xtrain)
 
-    # model 생성
-    model = init_model(num_x_y_xtrain)
+        # model 생성
+        model = init_model(num_x_y_xtrain)
 
-    # callback 설정
-    callbacks = callback()
-    # validation_data
-    validation_data = (np.expand_dims(x_train_scaled, axis=0), np.expand_dims(y_train_scaled, axis=0))
+        # callback 설정
+        callbacks = callback()
+        # validation_data
+        validation_data = (np.expand_dims(x_train_scaled, axis=0), np.expand_dims(y_train_scaled, axis=0))
 
-    # model learning
-    model.fit(x=generator,
-              epochs=1,
-              steps_per_epoch=100,
-              validation_data=validation_data,
-              callbacks=callbacks)
+        # model learning
+        model.fit(x=generator,
+                  epochs=1,
+                  steps_per_epoch=100,
+                  validation_data=validation_data,
+                  callbacks=callbacks)
 
-    model.save('model/' + str(target_lst).replace('\'','') + '.h5')
+        model.save('model/' + str(target_lst).replace('\'','') + '.h5')
 
-    del model
+        del model
+
+    sys.exit()
