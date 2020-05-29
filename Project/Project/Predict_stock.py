@@ -20,9 +20,6 @@ def init():
     print(pd.__version__)
 
 def load_data():
-    # 파일 불러오기 예시
-    # pd.read_csv('/content/gdrive/My Drive/Colab Notebooks/train.csv')
-    # 4319
     print('---------  load_data  ----------')
     data = pd.read_csv('result.csv', encoding='utf-8').set_index('date')
     print(data.shape)
@@ -33,7 +30,6 @@ def load_data():
 def data_processing(data, target_names):
     print('---------  data_processing  ----------')
     target_name = target_names[0]
-    # target_names = [target_name]  # , 'green_pepper'
     shift_steps = 1
 
     # x_data
@@ -124,7 +120,7 @@ def loss_mse_warmup(y_true, y_pred):
     # [batch_size, sequence_length - 50, num_y_signals]
 
     # Calculat the Mean Squared Error and use it as loss.
-    mse = mean(abs(y_true_slice - y_pred_slice) ** 2)
+    mse = mean((y_true_slice - y_pred_slice) ** 2)
 
     return mse
 
@@ -169,7 +165,7 @@ target_lsts = [['아시아종묘', 'green_pepper'],
                ['오뚜기', 'onion']]
 
 if __name__ == '__main__':
-    for target_lst in target_lsts[:2]:
+    for target_lst in target_lsts:
         print('----------' ,target_lst, '------------')
         # GPU 확인
         init()
