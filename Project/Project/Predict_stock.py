@@ -1,7 +1,4 @@
 import tensorflow as tf
-import datetime as dt
-import matplotlib.pyplot as plt
-import tensorflow as tf
 import numpy as np
 import pandas as pd
 import sys
@@ -11,7 +8,6 @@ from tensorflow.keras.layers import Input, Dense, GRU, Embedding
 from tensorflow.keras.optimizers import RMSprop
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard, ReduceLROnPlateau
 from tensorflow.keras.backend import square, mean
-from tensorflow.keras.models import load_model
 
 def init():
     print(tf.test.is_gpu_available(cuda_only=False, min_cuda_compute_capability=None))
@@ -107,17 +103,8 @@ def loss_mse_warmup(y_true, y_pred):
     y_true is the desired output.
     y_pred is the model's output.
     """
-
-    # The shape of both input tensors are:
-    # [batch_size, sequence_length, num_y_signals].
-
-    # Ignore the "warmup" parts of the sequences
-    # by taking slices of the tensors.
-    y_true_slice = y_true[:, 50:, :]
-    y_pred_slice = y_pred[:, 50:, :]
-
-    # These sliced tensors both have this shape:
-    # [batch_size, sequence_length - 50, num_y_signals]
+    y_true_slice = y_true[:, 100:, :]
+    y_pred_slice = y_pred[:, 100:, :]
 
     # Calculat the Mean Squared Error and use it as loss.
     mse = mean((y_true_slice - y_pred_slice) ** 2)
@@ -127,7 +114,7 @@ def loss_mse_warmup(y_true, y_pred):
 def init_model(num_x_y_xtrain):
     model = Sequential()
 
-    model.add(GRU(units=256,
+    model.add(GRU(units=512,
                   return_sequences=True,
                   input_shape=(None, num_x_y_xtrain[0],)))
 
@@ -150,46 +137,64 @@ def callback():
 
 # target_lst = ['아시아종묘', 'green_pepper']
 
-target_lsts = [['아시아종묘', 'green_pepper'],
-               ['아세아텍', 'price_egg'],
-               ['효성오앤비', 'kospi'],
-               ['남해화학', 'price_egg'],
-               ['SPC삼립', 'kospi'],
-               ['조비', 'price_egg'],
-               ['경농', 'green_onion'],
-               ['KPX생명과학', 'cabbage1'],
-               ['KG케미칼', 'potato'],
-               ['농심', 'price_sugar'],
-               ['농우바이오', 'kospi'],
-               ['동방아그로', 'exchangerate'],
-               ['오뚜기', 'onion']]
+# target_lsts = [['아시아종묘', 'green_pepper'],
+#                ['아세아텍', 'price_egg'],
+#                ['효성오앤비', 'kospi'],
+#                ['남해화학', 'price_egg'],
+#                ['SPC삼립', 'kospi'],
+#                ['조비', 'price_egg'],
+#                ['경농', 'green_onion'],
+#                ['KPX생명과학', 'cabbage1'],
+#                ['KG케미칼', 'potato'],
+#                ['농심', 'price_sugar'],
+#                ['농우바이오', 'kospi'],
+#                ['동방아그로', 'exchangerate'],
+#                ['오뚜기', 'onion']]
+
+target_lsts = [['아시아종묘'],['아시아종묘','potato'],['아시아종묘','price_egg'],['아시아종묘','price_milk'],['아시아종묘','exchangerate'],
+               ['조비'],['조비','onion'],['조비','carrot'],['조비','price_egg'],['조비','price_milk'],['조비','price_sugar'],['조비','Dubai'],
+               ['효성오앤비'],['효성오앤비','cabbage1'],['효성오앤비','carrot'],['효성오앤비','price_milk'],['효성오앤비','exchangerate'],['효성오앤비','kospi'],
+               ['경농'],['경농','onion'],['경농','green_onion'],['경농','price_egg'],['경농','price_milk'],['경농','price_sugar'],['경농','exchangerate'],['경농','Dubai'],
+               ['남해화학'],['남해화학','potato'],['남해화학','cabbage1'],['남해화학','price_egg'],['남해화학','price_sugar'],['남해화학','exchangerate'],['남해화학','kospi'],['남해화학','Brent'],
+               ['KG케미칼'],['KG케미칼','potato'],['KG케미칼','price_egg'],['KG케미칼','price_milk'],['KG케미칼','price_sugar'],['KG케미칼','exchangerate'],['KG케미칼','kospi'],['KG케미칼','Brent'],
+               ['농우바이오'],['농우바이오','potato'],['농우바이오','tomato'],['농우바이오','carrot'],['농우바이오','price_milk'],['농우바이오','price_sugar'],['농우바이오','exchangerate'],['농우바이오','kospi'],
+               ['성보화학'],['성보화학','red_pepper'],['성보화학','cabbage1'],['성보화학','onion'],['성보화학','carrot'],['성보화학','price_milk'],['성보화학','kospi'],
+               ['아세아텍'],['아세아텍','price_egg'],['아세아텍','price_milk'],['아세아텍','exchangerate'],['아세아텍','onion'],
+               ['동방아그로'],['동방아그로','green_pepper'],['동방아그로','red_pepper'],['동방아그로','cucumber'],['동방아그로','price_milk'],['동방아그로','exchangerate'],['동방아그로','kospi'],['동방아그로','WTI'],
+               ['KPX생명과학'],['KPX생명과학','potato'],['KPX생명과학','cabbage'],['KPX생명과학','cabbage1'],['KPX생명과학','price_egg'],['KPX생명과학','exchangerate'],['KPX생명과학','kospi'],
+               ['SPC삼립'],['SPC삼립','onion'],['SPC삼립','carrot'],['SPC삼립','green_onion'],['SPC삼립','price_milk'],['SPC삼립','price_sugar'],['SPC삼립','kospi'],['SPC삼립','Dubai'],
+               ['풀무원'],['풀무원','onion'],['풀무원','carrot'],['풀무원','green_onion'],['풀무원','price_milk'],['풀무원','price_sugar'],['풀무원','exchangerate'],
+               ['농심'],['농심','onion'],['농심','carrot'],['농심','green_onion'],['농심','price_egg'],['농심','price_milk'],['농심','price_sugar'],['농심','Dubai'],
+               ['오뚜기'],['오뚜기','onion'],['오뚜기','carrot'],['오뚜기','green_onion'],['오뚜기','price_egg'],['오뚜기','price_milk'],['오뚜기','Dubai']]
 
 if __name__ == '__main__':
+    # GPU 확인
+    init()
+
+    # data_load
+    data = load_data()
+    # callback 설정
+    callbacks = callback()
+
     for target_lst in target_lsts:
         print('----------' ,target_lst, '------------')
-        # GPU 확인
-        init()
 
-        # data_load
-        data = load_data()
 
         # data_processing
         x_train_scaled, x_test_scaled, y_train_scaled, y_test_scaled, num_x_y_xtrain = data_processing(data, target_lst)
 
         # generator 생성
-        generator = batch_generator(batch_size=128, sequence_length=365, num_x_y_xtrain = num_x_y_xtrain)
+        generator = batch_generator(batch_size=256, sequence_length=180, num_x_y_xtrain = num_x_y_xtrain)
 
         # model 생성
         model = init_model(num_x_y_xtrain)
 
-        # callback 설정
-        callbacks = callback()
         # validation_data
         validation_data = (np.expand_dims(x_train_scaled, axis=0), np.expand_dims(y_train_scaled, axis=0))
 
         # model learning
         model.fit(x=generator,
-                  epochs=1,
+                  epochs=20,
                   steps_per_epoch=100,
                   validation_data=validation_data,
                   callbacks=callbacks)

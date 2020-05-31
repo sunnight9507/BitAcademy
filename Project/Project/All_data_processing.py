@@ -11,7 +11,7 @@ warnings.filterwarnings("ignore")
 plt.style.use('ggplot')
 
 start = '20140801'  # '20110101'
-end = '20200524'
+end = '20200530'
 
 # 평일 날짜만 추출
 dt_index = pd.DataFrame(pd.date_range(start=start, end=end, freq='B')).rename(columns={0: 'date'})
@@ -164,24 +164,6 @@ def processing_KOSPI(data):
     data = data.fillna(method='bfill')
 
     data = drop_duplicates(data)
-    print(data.tail(3))
-    print()
-    return data
-
-def processing_Oil_prices(data):
-    data['날짜'] = data['기간'].apply(lambda x: parse('20' + x[:2] + x[3:5] + x[6:8]))
-
-    data = pd.merge(dt_index, data, how='left', left_on='date', right_on='날짜').set_index('date')
-
-    # null 값 처리
-    data = data.fillna('-')
-    data['Dubai'] = data['Dubai'].apply(lambda x: np.nan if x == '-' else float(x))
-    data['Brent'] = data['Brent'].apply(lambda x: np.nan if x == '-' else float(x))
-    data['WTI'] = data['WTI'].apply(lambda x: np.nan if x == '-' else float(x))
-
-    data = data.fillna(method='bfill')
-    data.drop(['기간', '날짜'], axis=1, inplace=True)
-
     print(data.tail(3))
     print()
     return data
@@ -364,6 +346,9 @@ def processing_oil_price():
     data = pd.merge(dt_index, data, how='left', left_on='date', right_on='date').set_index('date')
 
     data = data.apply(pd.to_numeric, errors='coerce')
+
+    data = data.fillna(method='ffill')
+    data = data.fillna(method='bfill')
 
     print(data.tail(3))
     print()
