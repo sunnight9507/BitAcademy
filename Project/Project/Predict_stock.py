@@ -103,11 +103,11 @@ def loss_mse_warmup(y_true, y_pred):
     y_true is the desired output.
     y_pred is the model's output.
     """
-    y_true_slice = y_true[:, 100:, :]
-    y_pred_slice = y_pred[:, 100:, :]
+    y_true_slice = y_true[:, 50:, :]
+    y_pred_slice = y_pred[:, 50:, :]
 
     # Calculat the Mean Squared Error and use it as loss.
-    mse = mean((y_true_slice - y_pred_slice) ** 2)
+    mse = mean(square(y_true_slice - y_pred_slice))
 
     return mse
 
@@ -151,6 +151,8 @@ def callback():
 #                ['동방아그로', 'exchangerate'],
 #                ['오뚜기', 'onion']]
 
+# target_lsts = [['아시아종묘', 'green_pepper']]
+#
 target_lsts = [['아시아종묘'],['아시아종묘','potato'],['아시아종묘','price_egg'],['아시아종묘','price_milk'],['아시아종묘','exchangerate'],
                ['조비'],['조비','onion'],['조비','carrot'],['조비','price_egg'],['조비','price_milk'],['조비','price_sugar'],['조비','Dubai'],
                ['효성오앤비'],['효성오앤비','cabbage1'],['효성오앤비','carrot'],['효성오앤비','price_milk'],['효성오앤비','exchangerate'],['효성오앤비','kospi'],
@@ -179,12 +181,11 @@ if __name__ == '__main__':
     for target_lst in target_lsts:
         print('----------' ,target_lst, '------------')
 
-
         # data_processing
         x_train_scaled, x_test_scaled, y_train_scaled, y_test_scaled, num_x_y_xtrain = data_processing(data, target_lst)
 
         # generator 생성
-        generator = batch_generator(batch_size=256, sequence_length=180, num_x_y_xtrain = num_x_y_xtrain)
+        generator = batch_generator(batch_size=256, sequence_length=365, num_x_y_xtrain = num_x_y_xtrain)
 
         # model 생성
         model = init_model(num_x_y_xtrain)

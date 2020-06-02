@@ -89,7 +89,8 @@ def create_DB_data(data, target_lst):
                           'match_status', 'price_error', 'return'])
     # com_name,date,tod_price,tod_status,tom_price,tom_status,match_status,price_error,returns
 
-    print(np.prod(returns[-65:-1]))
+    print(np.prod(returns[-50:-1]))
+    print(match_status[-50:-1].mean())
 
     return DB_data
 
@@ -121,6 +122,7 @@ if __name__ == '__main__':
 
 
     for target_lst in target_lsts:
+        print('--------', target_lst, '--------')
         x_train_scaled, x_test_scaled, y_train_scaled, y_test_scaled, num_x_y_xtrain = Predict_stock.data_processing(data, target_lst)
 
         # generator 생성
