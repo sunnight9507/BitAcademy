@@ -89,12 +89,13 @@ def create_DB_data(data, target_lst):
                           'match_status', 'price_error', 'return'])
     # com_name,date,tod_price,tod_status,tom_price,tom_status,match_status,price_error,returns
 
-    print(np.prod(returns[-50:-1]))
-    print(match_status[-50:-1].mean())
+    # print(np.prod(returns[-50:-1]))
+    # print(match_status[-50:-1].mean())
 
     return DB_data
 
 def db_to_database(DB_data):
+    print('---------   db_to_database --------')
     conn = pymysql.connect(host='192.168.1.23', user='root', password='1231',
                                db='bms_test', charset='utf8')
 
@@ -110,6 +111,38 @@ def db_to_database(DB_data):
 
     conn.commit()
 
+def find_final_lst(lsts):
+
+    print(lsts)
+
+    idx = 0
+    final_lsts = []
+    name,accuracy,returns  = '', 0, 0
+
+    for lst in lsts:
+        print(lst, stock_lsts[idx], stock_lsts[idx] in lst[0])
+        if stock_lsts[idx] in lst[0]:
+            if accuracy < lst[1]:
+                name, accuracy, returns = lst
+            elif accuracy == lst[1] and returns < lst[2]:
+                name, accuracy, returns = lst
+        else:
+            final_lsts.append([name, accuracy, returns])
+            name, accuracy, returns = '', 0, 0
+            idx += 1
+            if accuracy < lst[1]:
+                name, accuracy, returns = lst
+            elif accuracy == lst[1] and returns < lst[2]:
+                name, accuracy, returns = lst
+
+    final_lsts.append([name, accuracy, returns])
+
+    return final_lsts
+
+stock_lsts = ['아시아종묘', '조비', '효성오앤비', '경농', '남해화학',
+              'KG케미칼', '농우바이오', '성보화학', '아세아텍', '동방아그로',
+              'KPX생명과학', 'SPC삼립', '풀무원', '농심', '오뚜기']
+
 if __name__ == '__main__':
     # GPU 확인
     Predict_stock.init()
@@ -120,13 +153,12 @@ if __name__ == '__main__':
     # data_processing
     target_lsts = Predict_stock.target_lsts
 
+    predict_result = []
 
+    # 모든 모델 성능 확인
     for target_lst in target_lsts:
         print('--------', target_lst, '--------')
         x_train_scaled, x_test_scaled, y_train_scaled, y_test_scaled, num_x_y_xtrain = Predict_stock.data_processing(data, target_lst)
-
-        # generator 생성
-        generator = Predict_stock.batch_generator(batch_size=256, sequence_length=365, num_x_y_xtrain=num_x_y_xtrain)
 
         # model 생성
         model = Predict_stock.init_model(num_x_y_xtrain)
@@ -137,10 +169,38 @@ if __name__ == '__main__':
 
         DB_data = create_DB_data(data, target_lst)
 
-        print(DB_data.tail())
+        print(DB_data.tail(3))
+
+        predict_result.append([str(target_lst), DB_data.match_status[-65:].mean(), np.prod(DB_data['return'][-65:])])
+
+        # db_to_database(DB_data)
+
+        del model
+
+
+    final_lsts = find_final_lst(predict_result)
+
+    for lst, a, b in final_lsts:
+        lst = lst.split('\'')
+        if lst[1] == lst[-2]: target_lst = [lst[1]]
+        else: target_lst = [lst[1], lst[-2]]
+
+        print('--------', target_lst, '--------')
+
+        x_train_scaled, x_test_scaled, y_train_scaled, y_test_scaled, num_x_y_xtrain = Predict_stock.data_processing(data, target_lst)
+
+        # model 생성
+        model = Predict_stock.init_model(num_x_y_xtrain)
+        # model 불러오기
+        model.load_weights('model/' + str(target_lst).replace('\'', '') + '.h5')
+
+        t, p = pred(model, data[target_lst].shift(1).values[1:], np.array(data[target_lst[0]].values[1:], dtype=np.float).reshape(-1, 1))
+
+        DB_data = create_DB_data(data, target_lst)
 
         db_to_database(DB_data)
 
         del model
+
 
     sys.exit()

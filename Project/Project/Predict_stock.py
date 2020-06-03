@@ -8,6 +8,7 @@ from tensorflow.keras.layers import Input, Dense, GRU, Embedding
 from tensorflow.keras.optimizers import RMSprop
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard, ReduceLROnPlateau
 from tensorflow.keras.backend import square, mean
+import time
 
 def init():
     print(tf.test.is_gpu_available(cuda_only=False, min_cuda_compute_capability=None))
@@ -30,14 +31,14 @@ def data_processing(data, target_names):
 
     # x_data
     df = data[target_names].shift(1)
-    print(df.tail(2))
+    print(df.tail(1))
     x_data = df.values[shift_steps:] # numpy array
     print("x_data Shape:", x_data.shape)
     print()
 
     # y_data
     df_targets = df[target_name].shift(-shift_steps)
-    print(df_targets.tail(2))
+    print(df_targets.tail(1))
     y_data = df_targets.values[shift_steps:].reshape(-1, 1) # numpy array
     print("y_data Shape:", y_data.shape)
     print()
@@ -114,7 +115,7 @@ def loss_mse_warmup(y_true, y_pred):
 def init_model(num_x_y_xtrain):
     model = Sequential()
 
-    model.add(GRU(units=512,
+    model.add(GRU(units=256,
                   return_sequences=True,
                   input_shape=(None, num_x_y_xtrain[0],)))
 
@@ -124,7 +125,7 @@ def init_model(num_x_y_xtrain):
 
     model.compile(loss=loss_mse_warmup, optimizer=optimizer)
 
-    model.summary()
+    # model.summary()
 
     return model
 
@@ -153,21 +154,48 @@ def callback():
 
 # target_lsts = [['아시아종묘', 'green_pepper']]
 #
-target_lsts = [['아시아종묘'],['아시아종묘','potato'],['아시아종묘','price_egg'],['아시아종묘','price_milk'],['아시아종묘','exchangerate'],
-               ['조비'],['조비','onion'],['조비','carrot'],['조비','price_egg'],['조비','price_milk'],['조비','price_sugar'],['조비','Dubai'],
-               ['효성오앤비'],['효성오앤비','cabbage1'],['효성오앤비','carrot'],['효성오앤비','price_milk'],['효성오앤비','exchangerate'],['효성오앤비','kospi'],
-               ['경농'],['경농','onion'],['경농','green_onion'],['경농','price_egg'],['경농','price_milk'],['경농','price_sugar'],['경농','exchangerate'],['경농','Dubai'],
-               ['남해화학'],['남해화학','potato'],['남해화학','cabbage1'],['남해화학','price_egg'],['남해화학','price_sugar'],['남해화학','exchangerate'],['남해화학','kospi'],['남해화학','Brent'],
-               ['KG케미칼'],['KG케미칼','potato'],['KG케미칼','price_egg'],['KG케미칼','price_milk'],['KG케미칼','price_sugar'],['KG케미칼','exchangerate'],['KG케미칼','kospi'],['KG케미칼','Brent'],
-               ['농우바이오'],['농우바이오','potato'],['농우바이오','tomato'],['농우바이오','carrot'],['농우바이오','price_milk'],['농우바이오','price_sugar'],['농우바이오','exchangerate'],['농우바이오','kospi'],
-               ['성보화학'],['성보화학','red_pepper'],['성보화학','cabbage1'],['성보화학','onion'],['성보화학','carrot'],['성보화학','price_milk'],['성보화학','kospi'],
-               ['아세아텍'],['아세아텍','price_egg'],['아세아텍','price_milk'],['아세아텍','exchangerate'],['아세아텍','onion'],
-               ['동방아그로'],['동방아그로','green_pepper'],['동방아그로','red_pepper'],['동방아그로','cucumber'],['동방아그로','price_milk'],['동방아그로','exchangerate'],['동방아그로','kospi'],['동방아그로','WTI'],
-               ['KPX생명과학'],['KPX생명과학','potato'],['KPX생명과학','cabbage'],['KPX생명과학','cabbage1'],['KPX생명과학','price_egg'],['KPX생명과학','exchangerate'],['KPX생명과학','kospi'],
-               ['SPC삼립'],['SPC삼립','onion'],['SPC삼립','carrot'],['SPC삼립','green_onion'],['SPC삼립','price_milk'],['SPC삼립','price_sugar'],['SPC삼립','kospi'],['SPC삼립','Dubai'],
-               ['풀무원'],['풀무원','onion'],['풀무원','carrot'],['풀무원','green_onion'],['풀무원','price_milk'],['풀무원','price_sugar'],['풀무원','exchangerate'],
-               ['농심'],['농심','onion'],['농심','carrot'],['농심','green_onion'],['농심','price_egg'],['농심','price_milk'],['농심','price_sugar'],['농심','Dubai'],
-               ['오뚜기'],['오뚜기','onion'],['오뚜기','carrot'],['오뚜기','green_onion'],['오뚜기','price_egg'],['오뚜기','price_milk'],['오뚜기','Dubai']]
+# target_lsts = [['아시아종묘'],['아시아종묘','potato'],['아시아종묘','price_egg'],['아시아종묘','price_milk'],['아시아종묘','exchangerate'],
+#                ['조비','onion'],['조비','carrot'],['조비','price_egg'],['조비','price_milk'],['조비','price_sugar'],
+#                ['효성오앤비'],['효성오앤비','cabbage1'],['효성오앤비','carrot'],['효성오앤비','price_milk'],['효성오앤비','kospi'],
+#                ['경농','onion'],['경농','green_onion'],['경농','price_egg'],['경농','exchangerate'],['경농','Dubai'],
+#                ['남해화학'],['남해화학','cabbage1'],['남해화학','price_sugar'],['남해화학','exchangerate'],['남해화학','kospi'],
+#                ['KG케미칼'],['KG케미칼','price_egg'],['KG케미칼','price_milk'],['KG케미칼','exchangerate'],['KG케미칼','kospi'],
+#                ['농우바이오'],['농우바이오','potato'],['농우바이오','tomato'],['농우바이오','exchangerate'],['농우바이오','kospi'],
+#                ['성보화학'],['성보화학','cabbage1'],['성보화학','onion'],['성보화학','carrot'],['성보화학','kospi'],
+#                ['아세아텍'],['아세아텍','price_egg'],['아세아텍','price_milk'],['아세아텍','exchangerate'],['아세아텍','onion'],
+#                ['동방아그로'],['동방아그로','green_pepper'],['동방아그로','cucumber'],['동방아그로','exchangerate'],['동방아그로','kospi'],
+#                ['KPX생명과학','potato'],['KPX생명과학','cabbage'],['KPX생명과학','cabbage1'],['KPX생명과학','price_egg'],['KPX생명과학','exchangerate'],
+#                ['SPC삼립','onion'],['SPC삼립','carrot'],['SPC삼립','price_milk'],['SPC삼립','price_sugar'],['SPC삼립','Dubai'],
+#                ['풀무원'],['풀무원','onion'],['풀무원','carrot'],['풀무원','green_onion'],['풀무원','price_milk'],['풀무원','price_sugar'],['풀무원','exchangerate'],
+#                ['농심'],['농심','onion'],['농심','green_onion'],['농심','price_egg'],['농심','price_milk'],['농심','price_sugar'],
+#                ['오뚜기','onion'],['오뚜기','carrot'],['오뚜기','green_onion'],['오뚜기','price_egg'],['오뚜기','Dubai'],
+#                ['카프로'],['카프로','potato'],['카프로','red_pepper'],['카프로','price_egg'],['카프로','exchangerate'],['카프로','KOSPI'],['카프로','WTI'],
+#                ['대동공업'],['대동공업','tomato'],['대동공업','cabbage1'],['대동공업','carrot'],['대동공업','price_milk'],['대동공업','exchangerate'],['대동공업','WTI'],
+#                ['서울식품'],['서울식품','potato'],['서울식품','onion'],['서울식품','green_onion'],['서울식품','price_egg'],['서울식품','price_milk'],['서울식품','price_sugar'],['서울식품','Dubai'],
+#                ['남양유업'],['남양유업','onion'],['남양유업','onion'],['남양유업','carrot'],['남양유업','green_onion'],['남양유업','price_egg'],['남양유업','price_milk'],['남양유업','price_sugar'],['남양유업','exchangerate'],
+#                ['대한제당'],['대한제당','tomato'],['대한제당','cabbage1'],['대한제당','price_egg'],['대한제당','price_milk'],['대한제당','price_sugar'],['대한제당','exchangerate'],['대한제당','WTI'],
+#                ['조흥'],['조흥','potato'],['조흥','red_pepper'],['조흥','onion'],['조흥','price_egg'],['조흥','price_milk'],['조흥','kospi'],
+#                ['빙그레'],['빙그레','cabbage'],['빙그레','carrot'],['빙그레','cucumber'],['빙그레','exchangerate'],['빙그레','Brent'],
+#                ['롯데푸드'],['롯데푸드','onion'],['롯데푸드','green_onion'],['롯데푸드','price_milk'],['롯데푸드','exchangerate'],
+#                ['CJ제일제당'],['CJ제일제당','onion'],['CJ제일제당','carrot'],['CJ제일제당','green_onion'],['CJ제일제당','cucumber'],['CJ제일제당','price_egg'],['CJ제일제당','price_milk'],['CJ제일제당','price_sugar'],['CJ제일제당','exchangerate'],
+#                ['삼양식품'],['삼양식품','potato'],['삼양식품','onion'],['삼양식품','carrot'],['삼양식품','green_onion'],['삼양식품','price_egg'],['삼양식품','price_milk'],['삼양식품','price_sugar'],['삼양식품','kospi'],
+#                ['매일홀딩스'],['매일홀딩스','potato'],['매일홀딩스','onion'],['매일홀딩스','carrot'],['매일홀딩스','green_onion'],['매일홀딩스','price_egg'],['매일홀딩스','price_milk'],['매일홀딩스','price_sugar'],['매일홀딩스','kospi'],['매일홀딩스','Dubai'],
+#                ['동서'],['동서','onion'],['동서','carrot'],['동서','green_onion'],['동서','price_egg'],['동서','price_milk'],['동서','price_sugar'],['동서','Dubai'],
+#                ['푸드웰'],['푸드웰','green_pepper'],['푸드웰','red_pepper'],['푸드웰','price_milk'],['푸드웰','exchangerate']]
+
+target_lsts = [['카프로'],['카프로','potato'],['카프로','red_pepper'],['카프로','price_egg'],['카프로','exchangerate'],['카프로','KOSPI'],['카프로','WTI'],
+               ['대동공업'],['대동공업','tomato'],['대동공업','cabbage1'],['대동공업','carrot'],['대동공업','price_milk'],['대동공업','exchangerate'],['대동공업','WTI'],
+               ['서울식품'],['서울식품','potato'],['서울식품','onion'],['서울식품','green_onion'],['서울식품','price_egg'],['서울식품','price_milk'],['서울식품','price_sugar'],['서울식품','Dubai'],
+               ['남양유업'],['남양유업','onion'],['남양유업','onion'],['남양유업','carrot'],['남양유업','green_onion'],['남양유업','price_egg'],['남양유업','price_milk'],['남양유업','price_sugar'],['남양유업','exchangerate'],
+               ['대한제당'],['대한제당','tomato'],['대한제당','cabbage1'],['대한제당','price_egg'],['대한제당','price_milk'],['대한제당','price_sugar'],['대한제당','exchangerate'],['대한제당','WTI'],
+               ['조흥'],['조흥','potato'],['조흥','red_pepper'],['조흥','onion'],['조흥','price_egg'],['조흥','price_milk'],['조흥','kospi'],
+               ['빙그레'],['빙그레','cabbage'],['빙그레','carrot'],['빙그레','cucumber'],['빙그레','exchangerate'],['빙그레','Brent'],
+               ['롯데푸드'],['롯데푸드','onion'],['롯데푸드','green_onion'],['롯데푸드','price_milk'],['롯데푸드','exchangerate'],
+               ['CJ제일제당'],['CJ제일제당','onion'],['CJ제일제당','carrot'],['CJ제일제당','green_onion'],['CJ제일제당','cucumber'],['CJ제일제당','price_egg'],['CJ제일제당','price_milk'],['CJ제일제당','price_sugar'],['CJ제일제당','exchangerate'],
+               ['삼양식품'],['삼양식품','potato'],['삼양식품','onion'],['삼양식품','carrot'],['삼양식품','green_onion'],['삼양식품','price_egg'],['삼양식품','price_milk'],['삼양식품','price_sugar'],['삼양식품','kospi'],
+               ['매일홀딩스'],['매일홀딩스','potato'],['매일홀딩스','onion'],['매일홀딩스','carrot'],['매일홀딩스','green_onion'],['매일홀딩스','price_egg'],['매일홀딩스','price_milk'],['매일홀딩스','price_sugar'],['매일홀딩스','kospi'],['매일홀딩스','Dubai'],
+               ['동서'],['동서','onion'],['동서','carrot'],['동서','green_onion'],['동서','price_egg'],['동서','price_milk'],['동서','price_sugar'],['동서','Dubai'],
+               ['푸드웰'],['푸드웰','green_pepper'],['푸드웰','red_pepper'],['푸드웰','price_milk'],['푸드웰','exchangerate']]
 
 if __name__ == '__main__':
     # GPU 확인
@@ -178,6 +206,8 @@ if __name__ == '__main__':
     # callback 설정
     callbacks = callback()
 
+    start = time.time()
+
     for target_lst in target_lsts:
         print('----------' ,target_lst, '------------')
 
@@ -185,7 +215,7 @@ if __name__ == '__main__':
         x_train_scaled, x_test_scaled, y_train_scaled, y_test_scaled, num_x_y_xtrain = data_processing(data, target_lst)
 
         # generator 생성
-        generator = batch_generator(batch_size=256, sequence_length=365, num_x_y_xtrain = num_x_y_xtrain)
+        generator = batch_generator(batch_size=128, sequence_length=365, num_x_y_xtrain = num_x_y_xtrain)
 
         # model 생성
         model = init_model(num_x_y_xtrain)
@@ -195,7 +225,7 @@ if __name__ == '__main__':
 
         # model learning
         model.fit(x=generator,
-                  epochs=20,
+                  epochs=50,
                   steps_per_epoch=100,
                   validation_data=validation_data,
                   callbacks=callbacks)
@@ -204,4 +234,5 @@ if __name__ == '__main__':
 
         del model
 
+    print('소요시간 : ', time.time() - start)
     sys.exit()

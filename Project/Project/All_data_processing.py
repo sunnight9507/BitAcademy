@@ -458,14 +458,57 @@ if __name__ == "__main__":
     print('==========롯데제과 주식 전처리==========')
     stock_Lotte = processing_stock_data('롯데제과')
 
+    print('==========카프로 주식 전처리==========')
+    stock_Capro = processing_stock_data('카프로')
+
+    print('==========대동공업 주식 전처리==========')
+    stock_Daedong = processing_stock_data('대동공업')
+
+    print('==========서울식품 주식 전처리==========')
+    stock_Seoulfood = processing_stock_data('서울식품')
+
+    print('==========남양유업 주식 전처리==========')
+    stock_Namyang = processing_stock_data('남양유업')
+
+    print('==========대한제당 주식 전처리==========')
+    stock_TS = processing_stock_data('대한제당')
+
+    print('==========조흥 주식 전처리==========')
+    stock_Choheung = processing_stock_data('조흥')
+
+    print('==========빙그레 주식 전처리==========')
+    stock_Bing = processing_stock_data('빙그레')
+
+    print('==========롯데푸드 주식 전처리==========')
+    stock_Lottefood = processing_stock_data('롯데푸드')
+
+    print('==========CJ제일제당 주식 전처리==========')
+    stock_CJ = processing_stock_data('CJ제일제당')
+
+    print('==========삼양식품 주식 전처리==========')
+    stock_Samyang = processing_stock_data('삼양식품')
+
+    print('==========매일홀딩스 주식 전처리==========')
+    stock_Maeil = processing_stock_data('매일홀딩스')
+
+    print('==========동서 주식 전처리==========')
+    stock_Dongsuh = processing_stock_data('동서')
+
+    print('==========푸드웰 주식 전처리==========')
+    stock_Foodwell = processing_stock_data('푸드웰')
+
     print('================전처리 끝===============')
 
-    result_data = pd.concat(
-        [Stock_Asia, stock_Jobi, stock_Hyosung, stock_Farming, stock_Namhae_Chemical, stock_KGChemical,
-         stock_Nongwoo_Bio, stock_Sungbo_Chemical, stock_Asia_Tech, stock_Eastern_Agro, stock_KPX, stock_SPC,
-         stock_Pulmuone, stock_Nongshim, stock_Ottogi, potato_price, tomato_price, green_pepper_price, red_pepper_price,
-         cabbage_price, cabbage1_price, onion_price, carrot_price, green_onion_price, cucumber_price, egg_price,
-         milk_price, sugar_price, Exchange_Rate, KOSPI, oil_price], axis=1)
+    result_data = pd.concat([Stock_Asia, stock_Jobi, stock_Hyosung, stock_Farming, stock_Namhae_Chemical,
+                             stock_KGChemical, stock_Nongwoo_Bio, stock_Sungbo_Chemical, stock_Asia_Tech,
+                             stock_Eastern_Agro,
+                             stock_KPX, stock_SPC, stock_Pulmuone, stock_Nongshim, stock_Ottogi,
+                             stock_Capro, stock_Daedong, stock_Seoulfood, stock_Namyang, stock_TS,
+                             stock_Choheung, stock_Bing, stock_Lottefood, stock_CJ, stock_Samyang,
+                             stock_Maeil, stock_Dongsuh, stock_Foodwell,
+                             potato_price, tomato_price, green_pepper_price, red_pepper_price, cabbage_price,
+                             cabbage1_price, onion_price, carrot_price, green_onion_price, cucumber_price,
+                             egg_price, milk_price, sugar_price, Exchange_Rate, KOSPI, oil_price], axis=1)
     result_data.to_csv('result.csv', encoding='utf-8')
 
-    result_data.corr().loc['potato':, '아시아종묘':].style.background_gradient(cmap='summer_r')
+    # result_data.corr().loc['potato':, '아시아종묘':].style.background_gradient(cmap='summer_r')
