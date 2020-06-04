@@ -83,6 +83,7 @@
 - 22주차
   - 파이프라인 구축
 - 23주차
-  - 파이프라인 구축
+  - 주식 데이터 추가
+  - 파이프라인 수정
 
 #### [참고 사이트](http://www.bitacademy.com/Course/Innovation/Course_Innovation_Ai_Bigdata.asp)
