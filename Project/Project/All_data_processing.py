@@ -355,6 +355,26 @@ def processing_oil_price():
     return data
 
 
+def cor_to_database(data):
+    conn = pymysql.connect(host='192.168.1.23', user='root', password='1231',
+                           db='bms_test', charset='utf8')
+
+
+    curs = conn.cursor()
+    sql = "delete from stock_corr"
+    curs.execute(sql)
+
+
+    sql = '''INSERT INTO stock_corr VALUES (%s,%s,%s)'''
+
+    data = data.corr().loc[:'푸드웰', :'푸드웰']
+    for i in data.index:
+        for j in data.columns:
+            if data[i][j] != 1:
+                curs.execute(sql, tuple([i, j, float(data[i][j])]))
+                # print(tuple([i, j, data[i][j]]))
+    conn.commit()
+
 if __name__ == "__main__":
     print('==========감자 가격 전처리=============')
     potato_price = processing_potato_price(load_potato_price())
@@ -491,9 +511,6 @@ if __name__ == "__main__":
     print('==========매일홀딩스 주식 전처리==========')
     stock_Maeil = processing_stock_data('매일홀딩스')
 
-    print('==========동서 주식 전처리==========')
-    stock_Dongsuh = processing_stock_data('동서')
-
     print('==========푸드웰 주식 전처리==========')
     stock_Foodwell = processing_stock_data('푸드웰')
 
@@ -505,10 +522,13 @@ if __name__ == "__main__":
                              stock_KPX, stock_SPC, stock_Pulmuone, stock_Nongshim, stock_Ottogi,
                              stock_Capro, stock_Daedong, stock_Seoulfood, stock_Namyang, stock_TS,
                              stock_Choheung, stock_Bing, stock_Lottefood, stock_CJ, stock_Samyang,
-                             stock_Maeil, stock_Dongsuh, stock_Foodwell,
+                             stock_Maeil, stock_Foodwell,
                              potato_price, tomato_price, green_pepper_price, red_pepper_price, cabbage_price,
                              cabbage1_price, onion_price, carrot_price, green_onion_price, cucumber_price,
                              egg_price, milk_price, sugar_price, Exchange_Rate, KOSPI, oil_price], axis=1)
     result_data.to_csv('result.csv', encoding='utf-8')
+
+    # 상관관계 DB 입력
+    cor_to_database(result_data)
 
     # result_data.corr().loc['potato':, '아시아종묘':].style.background_gradient(cmap='summer_r')

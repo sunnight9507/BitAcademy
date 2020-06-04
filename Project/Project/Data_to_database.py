@@ -30,12 +30,16 @@ def create_DB_data(data, target_lst):
     # date
     date = np.array((data[target_lst].reset_index()['date'][1:])).reshape(-1, 1)
 
+    print(date.shape)
+
     # com_name
     com_name = np.array([target_name for _ in range(len(date))]).reshape(-1, 1)
     # com_code
     com_code = np.array(['000001' for _ in range(len(date))]).reshape(-1, 1)
     # tod_price
     tod_price = np.array(data[target_name])[1:].reshape(-1, 1)
+
+    print(tod_price.shape)
 
     # tod_status
     tod_status = np.array([0 for _ in range(len(date))]).reshape(-1, 1)
@@ -89,6 +93,7 @@ def create_DB_data(data, target_lst):
                           'match_status', 'price_error', 'return'])
     # com_name,date,tod_price,tod_status,tom_price,tom_status,match_status,price_error,returns
 
+    print(DB_data.tail())
     # print(np.prod(returns[-50:-1]))
     # print(match_status[-50:-1].mean())
 
@@ -101,7 +106,7 @@ def db_to_database(DB_data):
 
     curs = conn.cursor()
 
-    sql = "delete from stock_predict where com_name=%s"
+    sql = "delete from stock_predict where com_name = %s"
     curs.execute(sql, DB_data['com_name'][0])
 
     sql = '''INSERT INTO stock_predict VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'''
@@ -113,14 +118,14 @@ def db_to_database(DB_data):
 
 def find_final_lst(lsts):
 
-    print(lsts)
+    # print(lsts)
 
     idx = 0
     final_lsts = []
     name,accuracy,returns  = '', 0, 0
 
     for lst in lsts:
-        print(lst, stock_lsts[idx], stock_lsts[idx] in lst[0])
+        print(lst)
         if stock_lsts[idx] in lst[0]:
             if accuracy < lst[1]:
                 name, accuracy, returns = lst
@@ -141,7 +146,15 @@ def find_final_lst(lsts):
 
 stock_lsts = ['아시아종묘', '조비', '효성오앤비', '경농', '남해화학',
               'KG케미칼', '농우바이오', '성보화학', '아세아텍', '동방아그로',
-              'KPX생명과학', 'SPC삼립', '풀무원', '농심', '오뚜기']
+              'KPX생명과학', 'SPC삼립', '풀무원', '농심', '오뚜기',
+              '카프로', '대동공업', '서울식품', '남양유업', '대한제당',
+              '조흥', '빙그레', '롯데푸드', 'CJ제일제당', '삼양식품',
+              '매일홀딩스', '푸드웰']
+
+# stock_lsts = ['카프로','대동공업','서울식품','남양유업','대한제당',
+#               '조흥','빙그레','롯데푸드','CJ제일제당','삼양식품',
+#               '매일홀딩스','동서','푸드웰']
+
 
 if __name__ == '__main__':
     # GPU 확인
@@ -150,13 +163,15 @@ if __name__ == '__main__':
     # data_load
     data = Predict_stock.load_data()
 
+    print(data.tail())
+
     # data_processing
     target_lsts = Predict_stock.target_lsts
 
     predict_result = []
 
     # 모든 모델 성능 확인
-    for target_lst in target_lsts:
+    for target_lst in target_lsts[:3]:
         print('--------', target_lst, '--------')
         x_train_scaled, x_test_scaled, y_train_scaled, y_test_scaled, num_x_y_xtrain = Predict_stock.data_processing(data, target_lst)
 
@@ -180,6 +195,9 @@ if __name__ == '__main__':
 
     final_lsts = find_final_lst(predict_result)
 
+    # data_load
+    data = Predict_stock.load_data()
+
     for lst, a, b in final_lsts:
         lst = lst.split('\'')
         if lst[1] == lst[-2]: target_lst = [lst[1]]
@@ -195,6 +213,8 @@ if __name__ == '__main__':
         model.load_weights('model/' + str(target_lst).replace('\'', '') + '.h5')
 
         t, p = pred(model, data[target_lst].shift(1).values[1:], np.array(data[target_lst[0]].values[1:], dtype=np.float).reshape(-1, 1))
+
+        print(len(t), len(p))
 
         DB_data = create_DB_data(data, target_lst)
 
