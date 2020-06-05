@@ -111,6 +111,7 @@ def db_to_database(DB_data):
 
     sql = '''INSERT INTO stock_predict VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'''
 
+    # print(DB_data.head().values)
     for data in DB_data.values:
         curs.execute(sql, (tuple(data)))
 
@@ -147,9 +148,9 @@ def find_final_lst(lsts):
 stock_lsts = ['아시아종묘', '조비', '효성오앤비', '경농', '남해화학',
               'KG케미칼', '농우바이오', '성보화학', '아세아텍', '동방아그로',
               'KPX생명과학', 'SPC삼립', '풀무원', '농심', '오뚜기',
-              '카프로', '대동공업', '서울식품', '남양유업', '대한제당',
-              '조흥', '빙그레', '롯데푸드', 'CJ제일제당', '삼양식품',
-              '매일홀딩스', '푸드웰']
+              '카프로', '대동공업','남양유업', '대한제당', '조흥',
+              '빙그레', '롯데푸드', 'CJ제일제당', '삼양식품', '매일홀딩스',
+              '푸드웰']
 
 # stock_lsts = ['카프로','대동공업','서울식품','남양유업','대한제당',
 #               '조흥','빙그레','롯데푸드','CJ제일제당','삼양식품',
@@ -171,7 +172,7 @@ if __name__ == '__main__':
     predict_result = []
 
     # 모든 모델 성능 확인
-    for target_lst in target_lsts[:3]:
+    for target_lst in target_lsts:
         print('--------', target_lst, '--------')
         x_train_scaled, x_test_scaled, y_train_scaled, y_test_scaled, num_x_y_xtrain = Predict_stock.data_processing(data, target_lst)
 

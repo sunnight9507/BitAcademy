@@ -11,7 +11,7 @@ import time
 def Main():
     # Driver Load
     options = webdriver.ChromeOptions()
-    driver = webdriver.Chrome("D:\python\chromedriver.exe", options=options)
+    driver = webdriver.Chrome("chromedriver.exe", options=options)
     # driver = webdriver.Chrome("‪D:\\python\\lib\\chromedriver.exe", options=options)
     driver.implicitly_wait(3)
     #// *[ @ id = "ui-datepicker-div"] / div[1] / div / select[1] / option[2]
@@ -20,24 +20,21 @@ def Main():
     # 이미지클릭후 날짜선택
 
     # 년도[10], [11], [12] -> 18, 19, 20
-    yearlist = 2,3,4,5,6,8,9,10,11,12
-    monthlist = 1,2,3,4,5,6,7,8,9,10,11,12
+    yearlist = 12 # 2,3,4,5,6,8,9,10,11,12
+    monthlist = [6]# 1,2,3,4,5,6,7,8,9,10,11,12
 
     #for year in yearlist:
     for month in monthlist:
             # 2019,01 -> 11,1 전달
     #if year == 12 and month == 6:
-        if month ==6:
-            break
-        else:
-            year_month_click(driver, 12, month)
+        year_month_click(driver, 12, month)
 
     # year_month_click(driver, 12, 4)
     driver.close()
 
 
 def year_month_click(driver, m_year, m_month):
-    for idx in range(1, 32):
+    for idx in range(1, 6):
         # 날짜는 1부터 31일 까지
         # 캘린더 이미지클릭
         driver.find_element_by_xpath('//*[@id="trendFrm"]/img').click()
@@ -132,7 +129,8 @@ def year_month_click(driver, m_year, m_month):
 # 페이지내에이있는 항목긁기
 def StartPageParsing(finance_html, pageDate):
     global curs
-    conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='123456', db='crawling', charset='utf8')
+    conn = pymysql.connect(host='192.168.1.23', user='root', password='1231',
+                               db='bms_test', charset='utf8')
     curs = conn.cursor()
     for item in finance_html.select('tbody tr '):
         품목 = item.select('tbody tr td')[0].text

@@ -11,7 +11,7 @@ warnings.filterwarnings("ignore")
 plt.style.use('ggplot')
 
 start = '20140801'  # '20110101'
-end = '20200530'
+end = '20200604'
 
 # 평일 날짜만 추출
 dt_index = pd.DataFrame(pd.date_range(start=start, end=end, freq='B')).rename(columns={0: 'date'})
@@ -529,6 +529,6 @@ if __name__ == "__main__":
     result_data.to_csv('result.csv', encoding='utf-8')
 
     # 상관관계 DB 입력
-    cor_to_database(result_data)
+    # cor_to_database(result_data)
 
     # result_data.corr().loc['potato':, '아시아종묘':].style.background_gradient(cmap='summer_r')
