@@ -85,5 +85,8 @@
 - 23주차
   - 주식 데이터 추가
   - 파이프라인 수정
+- 24주차
+  - 리플릿, 폼보드 작성
+  - 발표자료 준비
 
 #### [참고 사이트](http://www.bitacademy.com/Course/Innovation/Course_Innovation_Ai_Bigdata.asp)
