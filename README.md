@@ -1,5 +1,12 @@
 ## Bitacademy : AI를 활용한 빅데이터 분석 플랫폼 개발 전문가과정
 
+### [Main project](https://github.com/BMS-Bitacademy/BMS)
+  - 프로젝트 명 : SPC(Stock Predict Service)
+  - 주가 예측 시스템 :chart_with_upwards_trend:
+  
+### [Mini project](https://github.com/sunnight9507/Bit_Academy/tree/master/12%EC%A3%BC%EC%B0%A8/mini_project)
+  - 프로젝트 명 : 네이버 영화 평점 데이터를 이용한 사용자별 영화 추천 시스템:movie_camera:
+
 #### [1주차](https://github.com/sunnight9507/bitacademy/tree/master/1%EC%A3%BC%EC%B0%A8)
 
 - 서버 구축(리눅스 - CentOS_7)
