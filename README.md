@@ -98,5 +98,8 @@
 - 24주차
   - 리플릿, 폼보드 작성
   - 발표자료 준비
+- 25주차
+  - 발표 준비
+  - 발표 및 
 
 #### [참고 사이트](http://www.bitacademy.com/Course/Innovation/Course_Innovation_Ai_Bigdata.asp)
