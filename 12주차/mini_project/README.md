@@ -1,4 +1,4 @@
-## BMS
+## BMS (Bigdata Marketing Service)
 
 ### 프로젝트 명 : 네이버 영화 평점 데이터를 이용한 사용자별 영화 추천 시스템:movie_camera:
 
