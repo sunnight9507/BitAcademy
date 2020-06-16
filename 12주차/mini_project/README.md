@@ -2,7 +2,7 @@
 
 ### 프로젝트 명 : 네이버 영화 평점 데이터를 이용한 사용자별 영화 추천 시스템:movie_camera:
 
-### 2. 팀 소개 및 역할 :two_men_holding_hands:
+### - 팀 소개 및 역할 :two_men_holding_hands:
 
 > **민병혁**(팀장)
 - Web Service 구현
