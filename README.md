@@ -100,6 +100,6 @@
   - 발표자료 준비
 - 25주차
   - 발표 준비
-  - 발표 및 
+  - 발표 및 수료식
 
 #### [참고 사이트](http://www.bitacademy.com/Course/Innovation/Course_Innovation_Ai_Bigdata.asp)
